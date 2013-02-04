@@ -103,6 +103,7 @@
 		22E60DB516C0063800C988C9 /* ECPreferencesWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindow.h; sourceTree = "<group>"; };
 		22E60DC416C00DFB00C988C9 /* Design.md */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Design.md; sourceTree = "<group>"; };
 		22E60DC516C00DFB00C988C9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		22E60DCB16C01C5E00C988C9 /* ECPWPreferencesBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ECPWPreferencesBundle.h; sourceTree = "<group>"; };
 		22E85D8415E42E7C00E67F50 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
 		22E85D8615E42E8900E67F50 /* ECCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECCore.framework; path = "/Caches/DerivedData/timekeeper-cdbrayceoisycccsdfcpscnhxtzs/Build/Products/Debug/ECCore.framework"; sourceTree = "<absolute>"; };
 		22EC40A61358A0D1005C1F1A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
@@ -308,6 +309,7 @@
 				2204C7EA15E282BB00F71E15 /* ECPreferencePaneProtocol.h */,
 				2204C7EB15E282BB00F71E15 /* ECPWController.h */,
 				2204C7EC15E282BB00F71E15 /* ECPWController.m */,
+				22E60DCB16C01C5E00C988C9 /* ECPWPreferencesBundle.h */,
 			);
 			path = Mac;
 			sourceTree = "<group>";

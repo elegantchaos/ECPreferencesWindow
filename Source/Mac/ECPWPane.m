@@ -4,10 +4,10 @@
 //  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
-#import "ECPWPanel.h"
+#import "ECPWPane.h"
 
 
-@implementation ECPWPanel
+@implementation ECPWPane
 
 - (NSView *)paneView
 {
@@ -15,7 +15,8 @@
     
     if (!prefsView) 
 	{
-        loaded = [NSBundle loadNibNamed:@"view" owner:self];
+		NSString* name = NSStringFromClass([self class]);
+        loaded = [NSBundle loadNibNamed:name owner:self];
     }
     
     if (loaded) 
@@ -29,9 +30,8 @@
 
 - (NSImage *)paneIcon
 {
-    return [[[NSImage alloc] initWithContentsOfFile:
-			 [[NSBundle bundleForClass:[self class]] pathForImageResource:@"icon"]
-			 ] autorelease];
+	NSString* name = NSStringFromClass([self class]);
+    return [NSImage imageNamed:name];
 }
 
 - (BOOL)allowsHorizontalResizing

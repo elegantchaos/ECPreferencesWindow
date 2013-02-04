@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2204C82415E282BB00F71E15 /* ECPWPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 2204C7E815E282BB00F71E15 /* ECPWPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2204C82515E282BB00F71E15 /* ECPWPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204C7E915E282BB00F71E15 /* ECPWPanel.m */; };
-		2204C82615E282BB00F71E15 /* ECPreferencePaneProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 2204C7EA15E282BB00F71E15 /* ECPreferencePaneProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2204C82415E282BB00F71E15 /* ECPWPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 2204C7E815E282BB00F71E15 /* ECPWPane.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2204C82515E282BB00F71E15 /* ECPWPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204C7E915E282BB00F71E15 /* ECPWPane.m */; };
 		2204C82715E282BB00F71E15 /* ECPWController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2204C7EB15E282BB00F71E15 /* ECPWController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2204C82815E282BB00F71E15 /* ECPWController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204C7EC15E282BB00F71E15 /* ECPWController.m */; };
 		2260A2EA15DFD7290057C9DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2283A3BB14F52E93009142F7 /* Cocoa.framework */; };
@@ -44,9 +43,8 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		2204C7E815E282BB00F71E15 /* ECPWPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPWPanel.h; sourceTree = "<group>"; };
-		2204C7E915E282BB00F71E15 /* ECPWPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWPanel.m; sourceTree = "<group>"; };
-		2204C7EA15E282BB00F71E15 /* ECPreferencePaneProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencePaneProtocol.h; sourceTree = "<group>"; };
+		2204C7E815E282BB00F71E15 /* ECPWPane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPWPane.h; sourceTree = "<group>"; };
+		2204C7E915E282BB00F71E15 /* ECPWPane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWPane.m; sourceTree = "<group>"; };
 		2204C7EB15E282BB00F71E15 /* ECPWController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPWController.h; sourceTree = "<group>"; };
 		2204C7EC15E282BB00F71E15 /* ECPWController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWController.m; sourceTree = "<group>"; };
 		221662E914FB9315009B975D /* ECCoreTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ECCoreTests.plist; path = Resources/Tests/ECCoreTests.plist; sourceTree = SOURCE_ROOT; };
@@ -304,9 +302,8 @@
 			isa = PBXGroup;
 			children = (
 				22E60DB516C0063800C988C9 /* ECPreferencesWindow.h */,
-				2204C7E815E282BB00F71E15 /* ECPWPanel.h */,
-				2204C7E915E282BB00F71E15 /* ECPWPanel.m */,
-				2204C7EA15E282BB00F71E15 /* ECPreferencePaneProtocol.h */,
+				2204C7E815E282BB00F71E15 /* ECPWPane.h */,
+				2204C7E915E282BB00F71E15 /* ECPWPane.m */,
 				2204C7EB15E282BB00F71E15 /* ECPWController.h */,
 				2204C7EC15E282BB00F71E15 /* ECPWController.m */,
 				22E60DCB16C01C5E00C988C9 /* ECPWPreferencesBundle.h */,
@@ -321,8 +318,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2204C82415E282BB00F71E15 /* ECPWPanel.h in Headers */,
-				2204C82615E282BB00F71E15 /* ECPreferencePaneProtocol.h in Headers */,
+				2204C82415E282BB00F71E15 /* ECPWPane.h in Headers */,
 				2204C82715E282BB00F71E15 /* ECPWController.h in Headers */,
 				22E60DB616C0063800C988C9 /* ECPreferencesWindow.h in Headers */,
 			);
@@ -439,7 +435,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2204C82515E282BB00F71E15 /* ECPWPanel.m in Sources */,
+				2204C82515E282BB00F71E15 /* ECPWPane.m in Sources */,
 				2204C82815E282BB00F71E15 /* ECPWController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

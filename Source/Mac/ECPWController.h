@@ -22,12 +22,8 @@
 - (id)initLoadingPanesFromBundle:(NSBundle*)bundle;
 
 - (void)showPreferencesWindow;
-- (void)createPreferencesWindowAndDisplay:(BOOL)shouldDisplay;
-- (void)createPreferencesWindow;
 - (void)destroyPreferencesWindow;
 - (BOOL)loadPrefsPaneNamed:(NSString *)name display:(BOOL)disp;
-- (BOOL)loadPreferencePaneNamed:(NSString *)name;
-- (void)activatePane:(NSString*)path;
 
 float ToolbarHeightForWindow(NSWindow *window);
 - (void)createPrefsToolbar;
@@ -35,7 +31,5 @@ float ToolbarHeightForWindow(NSWindow *window);
 
 // Accessors
 - (NSWindow *)preferencesWindow;
-
-- (NSArray *)loadedPanes;
 
 @end

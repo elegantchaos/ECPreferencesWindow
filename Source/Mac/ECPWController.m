@@ -7,18 +7,19 @@
 
 #import "ECPWController.h"
 #import "ECPWPreferencesBundle.h"
-#import "ECPreferencePaneProtocol.h"
+#import "ECPWPane.h"
 
 @interface ECPWController()
 
 @property (strong, nonatomic) NSDictionary* options;
-@property (strong, nonatomic) NSMutableDictionary* preferencePanes;
-@property (strong, nonatomic) NSMutableArray* panesOrder;
+@property (strong, nonatomic) NSMutableArray* panes;
 
 @property (strong, nonatomic) NSWindow *prefsWindow;
 
 @property (strong, nonatomic) NSToolbar *prefsToolbar;
 @property (strong, nonatomic) NSMutableDictionary *prefsToolbarItems;
+
+- (void)createPreferencesWindowAndDisplay:(BOOL)shouldDisplay;
 
 @end
 
@@ -26,7 +27,7 @@
 
 ECDefineDebugChannel(ECPreferencesChannel);
 
-#define Last_Pane_Defaults_Key	[[[NSBundle mainBundle] bundleIdentifier] stringByAppendingString:@"_Preferences_Last_Pane_Defaults_Key"]
+NSString *const SelectedPaneKey = @"SelectedPane";
 
 // ************************************************
 // version/init/dealloc/constructors
@@ -37,7 +38,7 @@ ECDefineDebugChannel(ECPreferencesChannel);
 {
     ECPWController* result = [[ECPWController alloc] initLoadingPanesFromBundle:nil];
 
-	return result;
+	return [result autorelease];
 }
 
 
@@ -45,8 +46,7 @@ ECDefineDebugChannel(ECPreferencesChannel);
 {
     if ((self = [super init]) != nil)
 	{
-        self.preferencePanes = [NSMutableDictionary dictionary];
-        self.panesOrder = [NSMutableArray array];
+        self.panes = [NSMutableArray array];
 
         self.toolbarDisplayMode = NSToolbarDisplayModeIconAndLabel;
         self.toolbarSizeMode = NSToolbarSizeModeDefault;
@@ -69,8 +69,7 @@ ECDefineDebugChannel(ECPreferencesChannel);
 	[_prefsWindow release];
 	[_prefsToolbar release];
 	[_prefsToolbarItems release];
-	[_preferencePanes release];
-	[_panesOrder release];
+	[_panes release];
 	[_options release];
 
     [super dealloc];
@@ -100,7 +99,6 @@ ECDefineDebugChannel(ECPreferencesChannel);
     NSBundle* bundle = [NSBundle bundleWithURL:url];
     if (bundle)
 	{
-        NSDictionary* paneDict = [bundle infoDictionary];
 		Class paneClass = [bundle principalClass];
 		if (paneClass)
 		{
@@ -126,6 +124,32 @@ ECDefineDebugChannel(ECPreferencesChannel);
     }
 }
 
+- (void)loadPreferencesPanes
+{
+	NSString* configKey = @"Panes" EC_CONFIGURATION_STRING;
+	NSArray* panes = self.options[configKey] ?: self.options[@"Panes"];
+
+	ECDebug(ECPreferencesChannel, @"Attempting to load panes %@", panes);
+	for (NSString* name in panes)
+	{
+		ECPWPane* pane = nil;
+		Class class = NSClassFromString(name);
+		if (class)
+		{
+			pane = [[class alloc] init];
+		}
+
+		if (pane)
+		{
+			ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
+			[self.panes addObject:pane];
+		}
+		else
+		{
+			ECDebug(ECPreferencesChannel, @"Couldn't load pane class %@", name);
+		}
+	}
+}
 
 // ************************************************
 // Preferences methods
@@ -134,88 +158,71 @@ ECDefineDebugChannel(ECPreferencesChannel);
 
 - (void)showPreferencesWindow
 {
-    [self createPreferencesWindowAndDisplay:YES];
+    if (self.prefsWindow)
+	{
+        if (self.alwaysOpensCentered && ![self.prefsWindow isVisible])
+		{
+            [self.prefsWindow center];
+        }
+
+        [self.prefsWindow makeKeyAndOrderFront:nil];
+	}
+	else
+	{
+		[self createPreferencesWindowAndDisplay:YES];
+	}
 }
-
-
-- (void)createPreferencesWindow
-{
-    [self createPreferencesWindowAndDisplay:YES];
-}
-
 
 - (void)createPreferencesWindowAndDisplay:(BOOL)shouldDisplay
 {
-    if (self.prefsWindow) {
-        if (self.alwaysOpensCentered && ![self.prefsWindow isVisible]) {
-            [self.prefsWindow center];
-        }
-        [self.prefsWindow makeKeyAndOrderFront:nil];
-        return;
-    }
-
+	[self loadPreferencesPanes];
+	
     // Create prefs window
-    unsigned int styleMask = (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
-    if (self.usesTexturedWindow) {
+    NSUInteger styleMask = (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
+    if (self.usesTexturedWindow)
+	{
         styleMask = (styleMask | NSTexturedBackgroundWindowMask);
     }
-    self.prefsWindow = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 350, 200)
-                                              styleMask:styleMask
-                                                backing:NSBackingStoreBuffered
-                                                  defer:NO];
 
-	self.prefsWindow.delegate = self;
-    [self.prefsWindow setReleasedWhenClosed:NO];
-    [self.prefsWindow setTitle:@"Preferences"]; // initial default title
-
-    [self.prefsWindow center];
+    NSWindow* window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 350, 200) styleMask:styleMask backing:NSBackingStoreBuffered defer:NO];
+	window.delegate = self;
+    [window setReleasedWhenClosed:NO];
+    [window setTitle:@"Preferences"]; // initial default title
+	self.prefsWindow = window;
+    [window center];
     [self createPrefsToolbar];
 
-    // Register defaults
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (self.panesOrder && ([self.panesOrder count] > 0)) {
-        NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
-        [defaultValues setObject:[self.panesOrder objectAtIndex:0] forKey:Last_Pane_Defaults_Key];
-        [defaults registerDefaults:defaultValues];
-    }
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSString* lastViewName = [defaults objectForKey:SelectedPaneKey];
 
-    // Load last view
-    NSString *lastViewName = [defaults objectForKey:Last_Pane_Defaults_Key];
-
-    if ([self.panesOrder containsObject:lastViewName] && [self loadPrefsPaneNamed:lastViewName display:NO])
+	ECPWPane* paneToLoad = [self paneNamed:lastViewName];
+	if (!paneToLoad && [self.panes count] > 0)
 	{
-        if (shouldDisplay) {
-            [self.prefsWindow makeKeyAndOrderFront:nil];
-        }
-        return;
-    }
+		ECDebug(ECPreferencesChannel, @"Could not load last-used preference pane \"%@\". Trying to load another pane instead.", lastViewName);
+		paneToLoad = self.panes[0];
+	}
 
-    ECDebug(ECPreferencesChannel, @"Could not load last-used preference pane \"%@\". Trying to load another pane instead.", lastViewName);
-
-    // Try to load each prefpane in turn if loading the last-viewed one fails.
-	for (NSString* pane in self.panesOrder)
+    if ([self loadPrefsPane:paneToLoad display:NO])
 	{
-        if (![pane isEqualToString:lastViewName]) {
-            if ([self loadPrefsPaneNamed:pane display:NO]) {
-                if (shouldDisplay) {
-                    [self.prefsWindow makeKeyAndOrderFront:nil];
-                }
-                return;
-            }
+        if (shouldDisplay)
+		{
+            [window makeKeyAndOrderFront:nil];
         }
     }
+	else
+	{
+		ECDebug(ECPreferencesChannel, @"Could not load any valid preference panes.");
 
-    ECDebug(ECPreferencesChannel, @"Could not load any valid preference panes.");
-
-    // Show alert dialog.
-    NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
-    NSRunAlertPanel(@"Preferences",
-                    [NSString stringWithFormat:@"Preferences are not available for %@.", appName],
-                    @"OK",
-                    nil,
-                    nil);
-    [self.prefsWindow release];
-    self.prefsWindow = nil;
+		// Show alert dialog.
+		NSString *appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
+		NSRunAlertPanel(@"Preferences",
+						[NSString stringWithFormat:@"Preferences are not available for %@.", appName],
+						@"OK",
+						nil,
+						nil);
+		[self.prefsWindow release];
+		self.prefsWindow = nil;
+	}
 }
 
 
@@ -225,74 +232,49 @@ ECDefineDebugChannel(ECPreferencesChannel);
 }
 
 
-- (void)activatePane:(NSString*)path
+
+- (ECPWPane*)paneNamed:(NSString*)name
 {
-    NSBundle* paneBundle = [NSBundle bundleWithPath:path];
-    if (paneBundle) {
-        NSDictionary* paneDict = [paneBundle infoDictionary];
-        NSString* paneName = [paneDict objectForKey:@"NSPrincipalClass"];
-        if (paneName) {
-            Class paneClass = NSClassFromString(paneName);
-            if (!paneClass) {
-                paneClass = [paneBundle principalClass];
-                if ([paneClass conformsToProtocol:@protocol(ECPreferencePaneProtocol)] && [paneClass isKindOfClass:[NSObject class]]) {
-                    NSArray *panes = [paneClass preferencePanes];
+	ECPWPane* result = nil;
+	Class class = NSClassFromString(name);
+	for (ECPWPane* pane in self.panes)
+	{
+		if ([pane class] == class)
+		{
+			result = pane;
+			break;
+		}
+	}
 
-                    for (id <ECPreferencePaneProtocol> aPane in panes)
-					{
-                        [self.panesOrder addObject:[aPane paneName]];
-                        [self.preferencePanes setObject:aPane forKey:[aPane paneName]];
-                    }
-                } else {
-                    ECDebug(ECPreferencesChannel, @"Did not load bundle: %@ because its Principal Class is either not an NSObject subclass, or does not conform to the PreferencePane Protocol.", paneBundle);
-                }
-            } else {
-                ECDebug(ECPreferencesChannel, @"Did not load bundle: %@ because its Principal Class was already used in another Preference pane.", paneBundle);
-            }
-        } else {
-            ECDebug(ECPreferencesChannel, @"Could not obtain name of Principal Class for bundle: %@", paneBundle);
-        }
-    } else {
-        ECDebug(ECPreferencesChannel, @"Could not initialize bundle: %@", paneBundle);
-    }
+	return result;
 }
-
-
-- (BOOL)loadPreferencePaneNamed:(NSString *)name
-{
-    return [self loadPrefsPaneNamed:(NSString *)name display:YES];
-}
-
-
-- (NSArray *)loadedPanes
-{
-    if (self.preferencePanes) {
-        return [self.preferencePanes allKeys];
-    }
-    return nil;
-}
-
-
 - (BOOL)loadPrefsPaneNamed:(NSString *)name display:(BOOL)disp
 {
-	NSWindow* prefsWindow = self.prefsWindow;
-    if (!prefsWindow) {
-        NSBeep();
-        ECDebug(ECPreferencesChannel, @"Could not load \"%@\" preference pane because the Preferences window seems to no longer exist.", name);
-        return NO;
+	ECPWPane* pane = [self paneNamed:name];
+	BOOL result;
+    if (pane)
+	{
+		result = [self loadPrefsPane:pane display:disp];
+	}
+	else
+	{
+        ECDebug(ECPreferencesChannel, @"Could not load preference pane named %@.", name);
+        result = NO;
     }
 
-    id tempPane = nil;
-    tempPane = [self.preferencePanes objectForKey:name];
-    if (!tempPane) {
-        ECDebug(ECPreferencesChannel, @"Could not load preference pane \"%@\", because that pane does not exist.", name);
-        return NO;
-    }
+	return result;
+}
+
+- (BOOL)loadPrefsPane:(ECPWPane*)pane display:(BOOL)disp
+{
+	ECAssertNonNil(self.prefsWindow);
+
+	NSWindow* prefsWindow = self.prefsWindow;
 
     NSView *prefsView = nil;
-    prefsView = [tempPane paneView];
+    prefsView = [pane paneView];
     if (!prefsView) {
-        ECDebug(ECPreferencesChannel, @"Could not load \"%@\" preference pane because its view could not be loaded from the bundle.", name);
+        ECDebug(ECPreferencesChannel, @"Could not load preference pane %@ because its view could not be loaded from the bundle.", pane);
         return NO;
     }
 
@@ -310,7 +292,6 @@ ECDefineDebugChannel(ECPreferencesChannel);
     newFrame.size.width = [prefsView frame].size.width;
     newFrame.origin.y += ([(NSView*)[prefsWindow contentView] frame].size.height - [prefsView frame].size.height);
 
-    id <ECPreferencePaneProtocol> pane = [self.preferencePanes objectForKey:name];
     [prefsWindow setShowsResizeIndicator:([pane allowsHorizontalResizing] || [pane allowsHorizontalResizing])];
 
     [prefsWindow setFrame:newFrame display:disp animate:disp];
@@ -337,12 +318,14 @@ ECDefineDebugChannel(ECPreferencesChannel);
 	NSString* app = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"CFBundleName"];
     if ((self.prefsToolbarItems && ([self.prefsToolbarItems count] > 1)) || self.alwaysShowsToolbar)
 	{
-        [prefsWindow setTitle: [NSString stringWithFormat: @"%@ - %@", app, name]];
+        [prefsWindow setTitle: [NSString stringWithFormat: @"%@ - %@", app, [pane paneName]]];
     }
 
     // Update defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:name forKey:Last_Pane_Defaults_Key];
+
+	NSString* name = NSStringFromClass([pane class]);
+    [defaults setObject:name forKey:SelectedPaneKey];
 
     [self.prefsToolbar setSelectedItemIdentifier:name];
 
@@ -384,39 +367,36 @@ float ToolbarHeightForWindow(NSWindow *window)
     // Create toolbar items
     self.prefsToolbarItems = [[NSMutableDictionary alloc] init];
     NSImage *itemImage;
-    for (NSString* name in self.panesOrder)
+    for (ECPWPane* pane in self.panes)
 	{
-        if ([self.preferencePanes objectForKey:name] != nil)
-		{
-            NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:name];
-            [item setPaletteLabel:name]; // item's label in the "Customize Toolbar" sheet (not relevant here, but we set it anyway)
-            [item setLabel:name]; // item's label in the toolbar
-            NSString *tempTip = [[self.preferencePanes objectForKey:name] paneToolTip];
-            if (!tempTip || [tempTip isEqualToString:@""]) {
-                [item setToolTip:nil];
-            } else {
-                [item setToolTip:tempTip];
-            }
-            itemImage = [[self.preferencePanes objectForKey:name] paneIcon];
-            [item setImage:itemImage];
+		NSString* name = NSStringFromClass([pane class]);
+		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:name];
+		[item setPaletteLabel:name]; // item's label in the "Customize Toolbar" sheet (not relevant here, but we set it anyway)
+		[item setLabel:name]; // item's label in the toolbar
+		NSString *tempTip = [pane paneToolTip];
+		if (!tempTip || [tempTip isEqualToString:@""]) {
+			[item setToolTip:nil];
+		} else {
+			[item setToolTip:tempTip];
+		}
+		itemImage = [pane paneIcon];
+		[item setImage:itemImage];
 
-            [item setTarget:self];
-            [item setAction:@selector(prefsToolbarItemClicked:)]; // action called when item is clicked
-            [self.prefsToolbarItems setObject:item forKey:name]; // add to items
-            [item release];
-        } else {
-            ECDebug(ECPreferencesChannel, @"Could not create toolbar item for preference pane \"%@\", because that pane does not exist.", name);
-        }
+		[item setTarget:self];
+		[item setAction:@selector(prefsToolbarItemClicked:)]; // action called when item is clicked
+		[self.prefsToolbarItems setObject:item forKey:name]; // add to items
+		[item release];
     }
 
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
 	NSString* identifier = [bundleIdentifier stringByAppendingString:@"_Preferences_Toolbar_Identifier"];
-    self.prefsToolbar = [(NSToolbar*) [NSToolbar alloc] initWithIdentifier: identifier];
-    [self.prefsToolbar setDelegate:self];
-    [self.prefsToolbar setAllowsUserCustomization:NO];
-    [self.prefsToolbar setAutosavesConfiguration:NO];
-    [self.prefsToolbar setDisplayMode:self.toolbarDisplayMode];
-    [self.prefsToolbar setSizeMode:self.toolbarSizeMode];
+    NSToolbar* toolbar = [(NSToolbar*) [NSToolbar alloc] initWithIdentifier: identifier];
+    [toolbar setDelegate:self];
+    [toolbar setAllowsUserCustomization:NO];
+    [toolbar setAutosavesConfiguration:NO];
+    [toolbar setDisplayMode:self.toolbarDisplayMode];
+    [toolbar setSizeMode:self.toolbarSizeMode];
+	self.prefsToolbar = toolbar;
 
     if ((self.prefsToolbarItems && ([self.prefsToolbarItems count] > 1)) || self.alwaysShowsToolbar) {
         [self.prefsWindow setToolbar:self.prefsToolbar];
@@ -438,19 +418,19 @@ float ToolbarHeightForWindow(NSWindow *window)
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
-    return self.panesOrder;
+    return self.panes;
 }
 
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
-    return self.panesOrder;
+    return self.panes;
 }
 
 
 - (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
 {
-    return self.panesOrder;
+    return self.panes;
 }
 
 

@@ -1,0 +1,1 @@
+Standard preferences window controller for AppKit applications.

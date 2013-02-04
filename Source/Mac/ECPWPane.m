@@ -15,8 +15,13 @@
     
     if (!prefsView) 
 	{
-		NSString* name = NSStringFromClass([self class]);
-        loaded = [NSBundle loadNibNamed:name owner:self];
+		NSString* bundle = self.options[@"Bundle"];
+		if (!bundle)
+		{
+			bundle = [self identifier];
+		}
+
+        loaded = [NSBundle loadNibNamed:bundle owner:self];
     }
     
     if (loaded) 
@@ -28,10 +33,62 @@
     return nil;
 }
 
-- (NSImage *)paneIcon
+- (NSString*)identifier
 {
-	NSString* name = NSStringFromClass([self class]);
+	NSString* result = self.options[@"Identifier"];
+	if (!result)
+	{
+		result = NSStringFromClass([self class]);
+	}
+
+	return result;
+}
+
+
+- (NSString*)name
+{
+	NSString* name = self.options[@"Name"];
+	if (!name)
+	{
+		name = [self identifier];
+	}
+
+    return name;
+}
+
+- (NSImage *)icon
+{
+	NSString* name = self.options[@"Icon"];
+	if (!name)
+	{
+		name = [self identifier];
+	}
+	
     return [NSImage imageNamed:name];
+}
+
+- (NSString*)toolTip
+{
+	NSString* result = self.options[@"ToolTip"];
+
+    return result;
+}
+
+- (NSToolbarItem*)toolbarItem
+{
+	if (!_toolbarItem)
+	{
+		NSString* identifier = self.identifier;
+		NSString* name = self.name;
+		NSToolbarItem* item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
+		[item setLabel:name];
+		[item setToolTip:self.toolTip];
+		[item setImage:self.icon];
+		self.toolbarItem = item;
+		[item release];
+	}
+
+	return _toolbarItem;
 }
 
 - (BOOL)allowsHorizontalResizing
@@ -50,25 +107,4 @@
 	
 }
 
-- (NSString*) paneName
-{
-	NSString* name = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey: @"CFBundleName"];
-	
-    return name;
-}
-
-// --------------------------------------------------------------------------
-// These methods must be overriden by the subclasses
-// --------------------------------------------------------------------------
-
-+ (NSArray*) preferencePanes
-{
-    return nil;
-}
-
-
-- (NSString*) paneToolTip
-{
-    return @"";
-}
 @end

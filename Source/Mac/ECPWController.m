@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSDictionary* options;
 @property (strong, nonatomic) NSMutableArray* panes;
+@property (strong, nonatomic) NSDictionary* panesIndex;
 
 @property (strong, nonatomic) NSWindow *prefsWindow;
 
@@ -127,9 +128,13 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)loadPreferencesPanes
 {
 	NSString* configKey = @"Panes" EC_CONFIGURATION_STRING;
-	NSArray* panes = self.options[configKey] ?: self.options[@"Panes"];
+	NSDictionary* panes = self.options[configKey] ?: self.options[@"Panes"];
 
 	ECDebug(ECPreferencesChannel, @"Attempting to load panes %@", panes);
+
+	NSUInteger count = [panes count];
+	NSMutableArray* items = [NSMutableArray arrayWithCapacity:count];
+	NSMutableDictionary* index = [NSMutableDictionary dictionaryWithCapacity:count];
 	for (NSString* name in panes)
 	{
 		ECPWPane* pane = nil;
@@ -142,13 +147,18 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		if (pane)
 		{
 			ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
-			[self.panes addObject:pane];
+			pane.options = panes[name];
+			[items addObject:pane];
+			[index setObject:pane forKey:name];
 		}
 		else
 		{
 			ECDebug(ECPreferencesChannel, @"Couldn't load pane class %@", name);
 		}
 	}
+
+	self.panes = items;
+	self.panesIndex = index;
 }
 
 // ************************************************
@@ -235,19 +245,11 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (ECPWPane*)paneNamed:(NSString*)name
 {
-	ECPWPane* result = nil;
-	Class class = NSClassFromString(name);
-	for (ECPWPane* pane in self.panes)
-	{
-		if ([pane class] == class)
-		{
-			result = pane;
-			break;
-		}
-	}
+	ECPWPane* result = self.panesIndex[name];
 
 	return result;
 }
+
 - (BOOL)loadPrefsPaneNamed:(NSString *)name display:(BOOL)disp
 {
 	ECPWPane* pane = [self paneNamed:name];
@@ -318,7 +320,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	NSString* app = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"CFBundleName"];
     if ((self.prefsToolbarItems && ([self.prefsToolbarItems count] > 1)) || self.alwaysShowsToolbar)
 	{
-        [prefsWindow setTitle: [NSString stringWithFormat: @"%@ - %@", app, [pane paneName]]];
+        [prefsWindow setTitle: [NSString stringWithFormat: @"%@ - %@", app, [pane name]]];
     }
 
     // Update defaults
@@ -364,28 +366,13 @@ float ToolbarHeightForWindow(NSWindow *window)
 
 - (void)createPrefsToolbar
 {
-    // Create toolbar items
-    self.prefsToolbarItems = [[NSMutableDictionary alloc] init];
-    NSImage *itemImage;
+	NSMutableDictionary* items = [[NSMutableDictionary alloc] initWithCapacity:[self.panes count]];
     for (ECPWPane* pane in self.panes)
 	{
-		NSString* name = NSStringFromClass([pane class]);
-		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:name];
-		[item setPaletteLabel:name]; // item's label in the "Customize Toolbar" sheet (not relevant here, but we set it anyway)
-		[item setLabel:name]; // item's label in the toolbar
-		NSString *tempTip = [pane paneToolTip];
-		if (!tempTip || [tempTip isEqualToString:@""]) {
-			[item setToolTip:nil];
-		} else {
-			[item setToolTip:tempTip];
-		}
-		itemImage = [pane paneIcon];
-		[item setImage:itemImage];
-
+		NSToolbarItem* item = [pane toolbarItem];
 		[item setTarget:self];
 		[item setAction:@selector(prefsToolbarItemClicked:)]; // action called when item is clicked
-		[self.prefsToolbarItems setObject:item forKey:name]; // add to items
-		[item release];
+		[items setObject:item forKey:pane.identifier];
     }
 
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
@@ -397,6 +384,8 @@ float ToolbarHeightForWindow(NSWindow *window)
     [toolbar setDisplayMode:self.toolbarDisplayMode];
     [toolbar setSizeMode:self.toolbarSizeMode];
 	self.prefsToolbar = toolbar;
+    self.prefsToolbarItems = items;
+	[items release];
 
     if ((self.prefsToolbarItems && ([self.prefsToolbarItems count] > 1)) || self.alwaysShowsToolbar) {
         [self.prefsWindow setToolbar:self.prefsToolbar];
@@ -418,21 +407,20 @@ float ToolbarHeightForWindow(NSWindow *window)
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
 {
-    return self.panes;
+    return [self.prefsToolbarItems allKeys];
 }
 
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
-    return self.panes;
+    return [self.prefsToolbarItems allKeys];
 }
 
 
 - (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
 {
-    return self.panes;
+    return [self.prefsToolbarItems allKeys];
 }
-
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
 {

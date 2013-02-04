@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface ECPreferencesController : NSObject<NSToolbarDelegate, NSWindowDelegate>
+@interface ECPWController : NSObject<NSToolbarDelegate, NSWindowDelegate>
 {
     NSWindow *prefsWindow;
     NSMutableDictionary *preferencePanes;
@@ -31,16 +31,10 @@
 }
 
 // Convenience constructors
-+ (id)preferencesWithPanesSearchPath:(NSString*)path bundleExtension:(NSString *)ext;
-+ (id)preferencesWithBundleExtension:(NSString *)ext;
-+ (id)preferencesWithPanesSearchPath:(NSString*)path;
-+ (id)preferences;
++ (id)preferencesWindowController;
 
 // Designated initializer
 - (id)initWithPanesSearchPath:(NSString*)path bundleExtension:(NSString *)ext;
-
-- (id)initWithBundleExtension:(NSString *)ext;
-- (id)initWithPanesSearchPath:(NSString*)path;
 
 - (void)showPreferencesWindow;
 - (void)createPreferencesWindowAndDisplay:(BOOL)shouldDisplay;

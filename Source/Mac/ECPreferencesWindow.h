@@ -4,5 +4,5 @@
 //  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
-#import "ECPreferencePanel.h"
-#import "ECPreferencesController.h"
+#import "ECPWPanel.h"
+#import "ECPWController.h"

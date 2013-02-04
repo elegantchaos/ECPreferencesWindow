@@ -5,69 +5,20 @@
 //  Based on original code by Matt Gemmell.
 // --------------------------------------------------------------------------
 
-#import "ECPreferencesController.h"
+#import "ECPWController.h"
 #import "ECPreferencePaneProtocol.h"
 
-@implementation ECPreferencesController
+@implementation ECPWController
 
 #define Last_Pane_Defaults_Key	[[[NSBundle mainBundle] bundleIdentifier] stringByAppendingString:@"_Preferences_Last_Pane_Defaults_Key"]
 
-// ************************************************
-// version/init/dealloc/constructors
-// ************************************************
+#pragma mark - Object Lifecycle
 
-
-+ (NSInteger)version
++ (id)preferencesWindowController
 {
-    // Version 1 was released on 28th June 2003.
-    // Version 2 was released on 14th November 2007.
-    return 2;
+    return [[[ECPWController alloc] initWithPanesSearchPath:nil bundleExtension:nil];
 }
 
-
-+ (id)preferencesWithPanesSearchPath:(NSString*)path bundleExtension:(NSString *)ext
-{
-    return [[[ECPreferencesController alloc] initWithPanesSearchPath:path bundleExtension:ext] autorelease];
-}
-
-
-+ (id)preferencesWithBundleExtension:(NSString *)ext
-{
-    return [[[ECPreferencesController alloc] initWithBundleExtension:ext] autorelease];
-}
-
-
-+ (id)preferencesWithPanesSearchPath:(NSString*)path
-{
-    return [[[ECPreferencesController alloc] initWithPanesSearchPath:path] autorelease];
-}
-
-
-+ (id)preferences
-{
-    return [[[ECPreferencesController alloc] init] autorelease];
-}
-
-
-- (id)init
-{
-    return [self initWithPanesSearchPath:nil bundleExtension:nil];
-}
-
-
-- (id)initWithPanesSearchPath:(NSString*)path
-{
-    return [self initWithPanesSearchPath:path bundleExtension:nil];
-}
-
-
-- (id)initWithBundleExtension:(NSString *)ext
-{
-    return [self initWithPanesSearchPath:nil bundleExtension:ext];
-}
-
-
-// Designated initializer
 - (id)initWithPanesSearchPath:(NSString*)path bundleExtension:(NSString *)ext
 {
     if ((self = [super init]) != nil)
@@ -77,9 +28,7 @@
         panesOrder = [[NSMutableArray alloc] init];
         
         [self setToolbarDisplayMode:NSToolbarDisplayModeIconAndLabel];
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_2
         [self setToolbarSizeMode:NSToolbarSizeModeDefault];
-#endif
         [self setUsesTexturedWindow:NO];
         [self setAlwaysShowsToolbar:NO];
         [self setAlwaysOpensCentered:YES];

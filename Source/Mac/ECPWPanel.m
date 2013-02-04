@@ -4,10 +4,10 @@
 //  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
-#import "ECPreferencePanel.h"
+#import "ECPWPanel.h"
 
 
-@implementation ECPreferencePanel
+@implementation ECPWPanel
 
 - (NSView *)paneView
 {

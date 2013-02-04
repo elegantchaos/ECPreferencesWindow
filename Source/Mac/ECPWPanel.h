@@ -6,7 +6,7 @@
 
 #import "ECPreferencePaneProtocol.h"
 
-@interface ECPreferencePanel : NSObject <ECPreferencePaneProtocol> 
+@interface ECPWPanel : NSObject <ECPreferencePaneProtocol> 
 {
     IBOutlet NSView *prefsView;
 }

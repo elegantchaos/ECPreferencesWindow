@@ -4,13 +4,5 @@
 //  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
-#import "ECPreferencePaneProtocol.h"
-
-@interface ECPreferencePanel : NSObject <ECPreferencePaneProtocol> 
-{
-    IBOutlet NSView *prefsView;
-}
-
-- (void) paneDidLoad;
-
-@end
+#import "ECPreferencePanel.h"
+#import "ECPreferencesController.h"

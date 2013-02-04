@@ -14,13 +14,12 @@
 @property (strong, nonatomic) NSDictionary* options;
 @property (strong, nonatomic) NSMutableArray* panes;
 @property (strong, nonatomic) NSDictionary* panesIndex;
-
-@property (strong, nonatomic) NSWindow *prefsWindow;
-
+@property (strong, nonatomic, readwrite) NSWindow *window;
 @property (strong, nonatomic) NSToolbar *prefsToolbar;
-@property (strong, nonatomic) NSMutableDictionary *prefsToolbarItems;
 
 - (void)createPreferencesWindowAndDisplay:(BOOL)shouldDisplay;
+- (void)createPrefsToolbar;
+- (void)prefsToolbarItemClicked:(NSToolbarItem*)item;
 
 @end
 
@@ -29,6 +28,8 @@
 ECDefineDebugChannel(ECPreferencesChannel);
 
 NSString *const SelectedPaneKey = @"SelectedPane";
+
+float ToolbarHeightForWindow(NSWindow *window);
 
 // ************************************************
 // version/init/dealloc/constructors
@@ -49,14 +50,15 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	{
         self.panes = [NSMutableArray array];
 
-        self.toolbarDisplayMode = NSToolbarDisplayModeIconAndLabel;
-        self.toolbarSizeMode = NSToolbarSizeModeDefault;
-        self.usesTexturedWindow = NO;
-        self.alwaysShowsToolbar = NO;
-        self.alwaysOpensCentered = YES;
-
 		NSURL* optionsURL = [[NSBundle mainBundle] URLForResource:@"ECPreferencesWindow" withExtension:@"plist"];
 		self.options = [NSDictionary dictionaryWithContentsOfURL:optionsURL];
+
+        self.toolbarDisplayMode = NSToolbarDisplayModeIconAndLabel;
+        self.toolbarSizeMode = NSToolbarSizeModeDefault;
+        self.usesTexturedWindow = [self.options[@"UsesTexturedWindow"] boolValue];
+        self.alwaysShowsToolbar = [self.options[@"AlwaysShowsToolbar"] boolValue];
+        self.centreFirstTimeOnly = [self.options[@"CentreFirstTimeOnly"] boolValue];
+
 
 		[self loadPreferencesBundlesInBundle:bundle];
     }
@@ -67,10 +69,10 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (void)dealloc
 {
-	[_prefsWindow release];
+	[_window release];
 	[_prefsToolbar release];
-	[_prefsToolbarItems release];
 	[_panes release];
+	[_panesIndex release];
 	[_options release];
 
     [super dealloc];
@@ -168,14 +170,14 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (void)showPreferencesWindow
 {
-    if (self.prefsWindow)
+    if (self.window)
 	{
-        if (self.alwaysOpensCentered && ![self.prefsWindow isVisible])
+        if (!self.centreFirstTimeOnly && ![self.window isVisible])
 		{
-            [self.prefsWindow center];
+            [self.window center];
         }
 
-        [self.prefsWindow makeKeyAndOrderFront:nil];
+        [self.window makeKeyAndOrderFront:nil];
 	}
 	else
 	{
@@ -198,7 +200,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	window.delegate = self;
     [window setReleasedWhenClosed:NO];
     [window setTitle:@"Preferences"]; // initial default title
-	self.prefsWindow = window;
+	self.window = window;
     [window center];
     [self createPrefsToolbar];
 
@@ -230,15 +232,15 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 						@"OK",
 						nil,
 						nil);
-		[self.prefsWindow release];
-		self.prefsWindow = nil;
+
+		self.window = nil;
 	}
 }
 
 
 - (void)destroyPreferencesWindow
 {
-    self.prefsWindow = nil;
+    self.window = nil;
 }
 
 
@@ -269,9 +271,9 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (BOOL)loadPrefsPane:(ECPWPane*)pane display:(BOOL)disp
 {
-	ECAssertNonNil(self.prefsWindow);
+	ECAssertNonNil(self.window);
 
-	NSWindow* prefsWindow = self.prefsWindow;
+	NSWindow* prefsWindow = self.window;
 
     NSView *prefsView = nil;
     prefsView = [pane paneView];
@@ -318,7 +320,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
     [prefsWindow setShowsResizeIndicator:canResize];
 
 	NSString* app = [[[NSBundle mainBundle] infoDictionary] objectForKey: @"CFBundleName"];
-    if ((self.prefsToolbarItems && ([self.prefsToolbarItems count] > 1)) || self.alwaysShowsToolbar)
+    if (([self.panesIndex count] > 1) || self.alwaysShowsToolbar)
 	{
         [prefsWindow setTitle: [NSString stringWithFormat: @"%@ - %@", app, [pane name]]];
     }
@@ -366,13 +368,13 @@ float ToolbarHeightForWindow(NSWindow *window)
 
 - (void)createPrefsToolbar
 {
-	NSMutableDictionary* items = [[NSMutableDictionary alloc] initWithCapacity:[self.panes count]];
+	NSUInteger count = [self.panes count];
+	NSMutableDictionary* items = [[NSMutableDictionary alloc] initWithCapacity:count];
     for (ECPWPane* pane in self.panes)
 	{
 		NSToolbarItem* item = [pane toolbarItem];
 		[item setTarget:self];
 		[item setAction:@selector(prefsToolbarItemClicked:)]; // action called when item is clicked
-		[items setObject:item forKey:pane.identifier];
     }
 
     NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
@@ -384,14 +386,15 @@ float ToolbarHeightForWindow(NSWindow *window)
     [toolbar setDisplayMode:self.toolbarDisplayMode];
     [toolbar setSizeMode:self.toolbarSizeMode];
 	self.prefsToolbar = toolbar;
-    self.prefsToolbarItems = items;
 	[items release];
 
-    if ((self.prefsToolbarItems && ([self.prefsToolbarItems count] > 1)) || self.alwaysShowsToolbar) {
-        [self.prefsWindow setToolbar:self.prefsToolbar];
-    } else if (!self.alwaysShowsToolbar && self.prefsToolbarItems && ([self.prefsToolbarItems count] == 1))
+    if ((count > 1) || self.alwaysShowsToolbar)
 	{
-		ECDebug(ECPreferencesChannel, @"Not showing toolbar in Preferences window because there is only one preference pane loaded. You can override this behaviour using -[setAlwaysShowsToolbar:YES].");
+        [self.window setToolbar:self.prefsToolbar];
+    }
+	else if (!self.alwaysShowsToolbar)
+	{
+		ECDebug(ECPreferencesChannel, @"Not showing toolbar in Preferences window because there are %ld panes", count);
     }
 }
 
@@ -399,45 +402,10 @@ float ToolbarHeightForWindow(NSWindow *window)
 
 - (void)prefsToolbarItemClicked:(NSToolbarItem*)item
 {
-    if (![[item itemIdentifier] isEqualToString:[self.prefsWindow title]]) {
+    if (![[item itemIdentifier] isEqualToString:[self.window title]]) {
         [self loadPrefsPaneNamed:[item itemIdentifier] display:YES];
     }
 }
-
-
-- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
-{
-    return [self.prefsToolbarItems allKeys];
-}
-
-
-- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
-{
-    return [self.prefsToolbarItems allKeys];
-}
-
-
-- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
-{
-    return [self.prefsToolbarItems allKeys];
-}
-
-- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
-{
-    return [self.prefsToolbarItems objectForKey:itemIdentifier];
-}
-
-
-// ************************************************
-// Accessors
-// ************************************************
-
-
-- (NSWindow *)preferencesWindow
-{
-    return self.prefsWindow;
-}
-
 
 // --------------------------------------------------------------------------
 //! Close the window.
@@ -445,8 +413,32 @@ float ToolbarHeightForWindow(NSWindow *window)
 
 - (IBAction) alternatePerformClose: (id) sender
 {
-	[self.preferencesWindow performClose: sender];
+	[self.window performClose: sender];
 }
+
+#pragma mark - Toolbar Delegate Methods
+
+- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar*)toolbar
+{
+    return [self.panesIndex allKeys];
+}
+
+- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
+{
+    return [self.panesIndex allKeys];
+}
+
+- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
+{
+    return [self.panesIndex allKeys];
+}
+
+- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag
+{
+	ECPWPane* pane = self.panesIndex[itemIdentifier];
+    return pane.toolbarItem;
+}
+
 
 @end
 

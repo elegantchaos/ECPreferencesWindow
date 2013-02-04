@@ -11,9 +11,10 @@
 
 @property (assign, nonatomic) BOOL usesTexturedWindow;
 @property (assign, nonatomic) BOOL alwaysShowsToolbar;
-@property (assign, nonatomic) BOOL alwaysOpensCentered;
+@property (assign, nonatomic) BOOL centreFirstTimeOnly;
 @property (assign, nonatomic) NSToolbarDisplayMode toolbarDisplayMode;
 @property (assign, nonatomic) NSToolbarSizeMode toolbarSizeMode;
+@property (strong, nonatomic, readonly) NSWindow *window;
 
 // Convenience constructors
 + (id)preferencesWindowController;
@@ -25,11 +26,5 @@
 - (void)destroyPreferencesWindow;
 - (BOOL)loadPrefsPaneNamed:(NSString *)name display:(BOOL)disp;
 
-float ToolbarHeightForWindow(NSWindow *window);
-- (void)createPrefsToolbar;
-- (void)prefsToolbarItemClicked:(NSToolbarItem*)item;
-
-// Accessors
-- (NSWindow *)preferencesWindow;
 
 @end

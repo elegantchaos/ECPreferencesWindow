@@ -16,15 +16,12 @@
 @property (assign, nonatomic) NSToolbarSizeMode toolbarSizeMode;
 @property (strong, nonatomic, readonly) NSWindow *window;
 
-// Convenience constructors
 + (id)preferencesWindowController;
 
-// Designated initializer
 - (id)initLoadingPanesFromBundle:(NSBundle*)bundle;
 
 - (void)showPreferencesWindow;
-- (void)destroyPreferencesWindow;
-- (BOOL)loadPrefsPaneNamed:(NSString *)name display:(BOOL)disp;
+- (void)selectPaneWithIdentifier:(NSString*)identifier;
 
 
 @end

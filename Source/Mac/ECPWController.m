@@ -51,8 +51,8 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		NSString* configKey = @"Panes" EC_CONFIGURATION_STRING;
 		self.panesToLoad = [NSMutableArray arrayWithArray:(self.options[configKey] ?: self.options[@"Panes"])];
 
-        self.toolbarDisplayMode = NSToolbarDisplayModeIconAndLabel;
-        self.toolbarSizeMode = NSToolbarSizeModeDefault;
+        self.toolbarDisplayMode = [self.options[@"ToolbarDisplayMode"] integerValue];
+        self.toolbarSizeMode = [self.options[@"ToolbarSizeMode"] integerValue];
         self.usesTexturedWindow = [self.options[@"UsesTexturedWindow"] boolValue];
         self.alwaysShowsToolbar = [self.options[@"AlwaysShowsToolbar"] boolValue];
         self.centreFirstTimeOnly = [self.options[@"CentreFirstTimeOnly"] boolValue];

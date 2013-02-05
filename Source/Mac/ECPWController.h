@@ -13,7 +13,7 @@
  which is replaced by the <ECPWPane> that corresponds to the selected
  toolbar icon.
 
- # Usage:
+ # Usage
 
  The class isn't a singleton, although typically you'll simply make one instance
  and store it somewhere (eg in your application delegate).
@@ -38,6 +38,8 @@
  - CentreFirstTimeOnly: should the window only be centered when it's created (YES), or every time it is shown (NO). Defaults to NO.
  - BundleDirectory: the name of the directory to look for preference bundles in. Defaults to "Preferences".
  - BundleExtension: the extension to look for in the bundle directory. Defaults to "preferences".
+ - ToolbarDisplayMode: the display mode to use for the toolbar. Defaults to NSToolbarDisplayModeDefault.
+ - ToolbarSizeMode: the display size mode to use for the toolbar. Defaults to NSToolbarSizeModeDefault.
  - Panes: a list of panes to load. See below.
 
  The Panes key should contain a list of dictionaries. Each of these
@@ -85,18 +87,75 @@
 
 @interface ECPWController : NSObject<NSToolbarDelegate, NSWindowDelegate>
 
+/**
+ Should the preferences window be textured?
+ */
+
 @property (assign, nonatomic) BOOL usesTexturedWindow;
+
+/** 
+ Should the toolbar be visible even if there's only one panel?
+ */
+
 @property (assign, nonatomic) BOOL alwaysShowsToolbar;
+
+/**
+ Should the window be centred when it's first created, or every time it's shown?
+ */
+
 @property (assign, nonatomic) BOOL centreFirstTimeOnly;
+
+/**
+ How the toolbar should be displayed.
+ */
+
 @property (assign, nonatomic) NSToolbarDisplayMode toolbarDisplayMode;
+
+/**
+ How the toolbar should be sized.
+ */
+
 @property (assign, nonatomic) NSToolbarSizeMode toolbarSizeMode;
+
+/**
+ The preferences window.
+ */
+
 @property (strong, nonatomic, readonly) NSWindow *window;
+
+/**
+ Return a new window controller.
+ 
+ @return A new instance of ECPWController.
+ */
 
 + (id)preferencesWindowController;
 
+/**
+ Initialise a new controller.
+ 
+ Settings for the controller are read from the Info.plist of the given
+ bundle, and the bundle is scanned for additional preferences bundles to load.
+
+ @param bundle Bundle to load settings and additional preference bundles from. Defaults to [NSBundle mainBundle].
+ @return The new controller.
+ */
+
 - (id)initLoadingPanesFromBundle:(NSBundle*)bundle;
 
+/**
+ Show the preferences window.
+ The previously selected pane is shown by default, or the first pane if none was previously selected.
+ */
+
 - (void)showPreferencesWindow;
+
+/**
+ Show the preferences window and select a given pane.
+
+ @param identifier The identifier of the pane to select.
+ */
+
 - (void)selectPaneWithIdentifier:(NSString*)identifier;
 
 

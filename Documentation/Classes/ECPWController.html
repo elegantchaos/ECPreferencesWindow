@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>ECPWController Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 858)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">ECPreferencesWindow </a></h1>
+				<a id="developerHome" href="../index.html">Elegant Chaos</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">ECPWController Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="ECPWController Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">ECPWController Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSToolbarDelegate<br />NSWindowDelegate</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">ECPWController.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>Manages a preferences window.</p>
+
+<p>The window consists of a toolbar of icons, and an area below the toolbar
+which is replaced by the <ECPWPane> that corresponds to the selected
+toolbar icon.</p>
+
+<h1>Usage:</h1>
+
+<p>The class isn&rsquo;t a singleton, although typically you&rsquo;ll simply make one instance
+and store it somewhere (eg in your application delegate).</p>
+
+<p>Call <showPreferencesWindow> to show the preferences window.</p>
+
+<pre><code>ECPWController* controller = [ECPWController preferencesWindowController];
+[controller showPreferencesWindow];
+</code></pre>
+
+<h1>Initialisation And Configuration</h1>
+
+<p>Most configuration is done via the ECPreferencesWindow key of the application&rsquo;s
+info.plist file.</p>
+
+<p>This key should contain a dictionary.</p>
+
+<p>A number of values in this dictionary configure the behaviour of the window:</p>
+
+<ul>
+<li>UsesTexturedWindow: should the preferences window be textured? Defaults to NO.</li>
+<li>AlwaysShowsToolbar: should the toolbar be visible even if there is just one pane? Defaults to NO.</li>
+<li>CentreFirstTimeOnly: should the window only be centered when it&rsquo;s created (YES), or every time it is shown (NO). Defaults to NO.</li>
+<li>BundleDirectory: the name of the directory to look for preference bundles in. Defaults to &ldquo;Preferences&rdquo;.</li>
+<li>BundleExtension: the extension to look for in the bundle directory. Defaults to &ldquo;preferences&rdquo;.</li>
+<li>Panes: a list of panes to load. See below.</li>
+</ul>
+
+
+<p>The Panes key should contain a list of dictionaries. Each of these
+describes a pane to add to the preferences window.</p>
+
+<p>Each pane dictionary can contain the following keys:
+&ndash; Class (required): the class to use for the pane.
+&ndash; Identifier: the identifier to use for the pane. Defaults to the class name.
+&ndash; Name: the text label to use for the pane. Defaults to the class name.
+&ndash; Icon: the name of the icon image to use for the panel. Defaults to the class name.
+&ndash; ToolTip: tooltip text to use for the pane. Defaults to nil.</p>
+
+<h1>Preference Bundles</h1>
+
+<p>In addition to loading the panes described in main application&rsquo;s info.plist, the
+controller also scans a folder for preference bundles, and loads any that it finds.</p>
+
+<p>Each of these bundles is then asked to provide a list of pane dictionaries for additional
+panes to load.</p>
+
+<h1>Timing</h1>
+
+<p>The bundles folder is scanned when the controller is first created, and any preference
+bundles that are found get called at this point in order to set themselves up.</p>
+
+<p>This allows preferences bundles to add features to an application when it first starts up,
+rather than only doing something when the preferences window is shown.</p>
+
+<p>The pane classes themselves are created lazily when the preferences window is first shown,
+so it&rsquo;s quite possible that they will never be created at all for a given run of an application.</p>
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Elegant Chaos. All rights reserved. (Last updated: 2013-02-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>

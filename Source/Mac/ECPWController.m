@@ -79,12 +79,14 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (void)loadPreferencesBundlesInBundle:(NSBundle*)bundle
 {
-	NSString* extension = self.options[@"BundleExtension"] ?: @"preferencesPane";
+	NSString* extension = self.options[@"BundleExtension"] ?: @"preferences";
 	NSString* directory = self.options[@"BundleDirectory"] ?: @"Preferences";
 
 	ECDebug(ECPreferencesChannel, @"Loading preferences bundles *.%@ in %@ of %@", extension, directory, bundle);
 
-	NSArray* bundles = [bundle URLsForResourcesWithExtension:extension subdirectory:directory];
+	NSURL* prefsFolder = [[bundle bundleURL] URLByAppendingPathComponent:@"Contents/Preferences"];
+	NSError* error;
+	NSArray* bundles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:prefsFolder includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:&error];
 	for (NSURL* url in bundles)
 	{
 		[self loadPreferencesBundleAtURL:url];
@@ -99,13 +101,13 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		Class paneClass = [bundle principalClass];
 		if (paneClass)
 		{
-			if ([paneClass conformsToProtocol:@protocol(ECPWBundle)])
+			if ([paneClass isSubclassOfClass:[ECPWBundle class]])
 			{
 				ECDebug(ECPreferencesChannel, @"Loaded preferences bundle %@", paneClass);
-				NSArray* panes = [paneClass preferencesController:self loadedBundle:bundle];
-				if (panes)
+				NSArray* additionalPanesToLoad = [paneClass preferencesController:self loadedBundle:bundle];
+				if (additionalPanesToLoad)
 				{
-					[self.panesToLoad addObjectsFromArray:panes];
+					[self.panesToLoad addObjectsFromArray:additionalPanesToLoad];
 				}
 			}
 			else

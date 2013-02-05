@@ -10,7 +10,7 @@
 
 @class ECPWController;
 
-@protocol ECPWBundle <NSObject>
+@interface ECPWBundle : NSObject
 
 + (NSArray*)preferencesController:(ECPWController*)controller loadedBundle:(NSBundle*)bundle;
 

@@ -63,8 +63,15 @@
 	{
 		name = [self identifier];
 	}
-	
-    return [NSImage imageNamed:name];
+
+	NSImage* result = [NSImage imageNamed:name];
+	if (!result)
+	{
+		NSURL* url = [[NSBundle bundleForClass:[self class]] URLForImageResource:name];
+		result = [[[NSImage alloc] initByReferencingURL:url] autorelease];
+	}
+
+    return result;
 }
 
 - (NSString*)toolTip

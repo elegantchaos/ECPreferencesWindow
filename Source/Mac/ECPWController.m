@@ -160,7 +160,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 				ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
 				NSString* identfier = [pane identifier];
 				[self.paneNames addObject:identfier];
-				[self.panes setObject:pane forKey:identfier];
+				(self.panes)[identfier] = pane;
 			}
 			else
 			{

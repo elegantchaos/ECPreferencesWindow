@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ECPWPreferencesBundle <NSObject>
+@class ECPWController;
 
-- (void)preferencesLoadedFromBundle:(NSBundle*)bundle;
+@protocol ECPWBundle <NSObject>
+
++ (NSArray*)preferencesController:(ECPWController*)controller loadedBundle:(NSBundle*)bundle;
 
 @end

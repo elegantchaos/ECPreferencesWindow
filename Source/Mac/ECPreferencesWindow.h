@@ -6,3 +6,4 @@
 
 #import "ECPWPane.h"
 #import "ECPWController.h"
+#import "ECPWBundle.h"

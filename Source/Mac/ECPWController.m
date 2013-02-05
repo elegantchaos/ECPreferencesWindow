@@ -2,18 +2,18 @@
 //  Copyright 2013 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
 //  liberal license: http://www.elegantchaos.com/license/liberal
-//  Based on original code by Matt Gemmell.
 // --------------------------------------------------------------------------
 
 #import "ECPWController.h"
-#import "ECPWPreferencesBundle.h"
+#import "ECPWBundle.h"
 #import "ECPWPane.h"
 
 @interface ECPWController()
 
 @property (strong, nonatomic) NSDictionary* options;
 @property (strong, nonatomic) NSMutableArray* paneNames;
-@property (strong, nonatomic) NSDictionary* panes;
+@property (strong, nonatomic) NSMutableArray* panesToLoad;
+@property (strong, nonatomic) NSMutableDictionary* panes;
 @property (strong, nonatomic) NSToolbar* toolbar;
 @property (strong, nonatomic, readwrite) NSWindow *window;
 
@@ -42,8 +42,14 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 {
     if ((self = [super init]) != nil)
 	{
-		NSURL* optionsURL = [[NSBundle mainBundle] URLForResource:@"ECPreferencesWindow" withExtension:@"plist"];
-		self.options = [NSDictionary dictionaryWithContentsOfURL:optionsURL];
+		if (!bundle)
+		{
+			bundle = [NSBundle mainBundle];
+		}
+
+		self.options = bundle.infoDictionary[@"ECPreferencesWindow"];
+		NSString* configKey = @"Panes" EC_CONFIGURATION_STRING;
+		self.panesToLoad = [NSMutableArray arrayWithArray:(self.options[configKey] ?: self.options[@"Panes"])];
 
         self.toolbarDisplayMode = NSToolbarDisplayModeIconAndLabel;
         self.toolbarSizeMode = NSToolbarSizeModeDefault;
@@ -75,10 +81,6 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 {
 	NSString* extension = self.options[@"BundleExtension"] ?: @"preferencesPane";
 	NSString* directory = self.options[@"BundleDirectory"] ?: @"Preferences";
-	if (!bundle)
-	{
-		bundle = [NSBundle mainBundle];
-	}
 
 	ECDebug(ECPreferencesChannel, @"Loading preferences bundles *.%@ in %@ of %@", extension, directory, bundle);
 
@@ -97,10 +99,14 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		Class paneClass = [bundle principalClass];
 		if (paneClass)
 		{
-			if ([paneClass conformsToProtocol:@protocol(ECPWPreferencesBundle)])
+			if ([paneClass conformsToProtocol:@protocol(ECPWBundle)])
 			{
 				ECDebug(ECPreferencesChannel, @"Loaded preferences bundle %@", paneClass);
-				[paneClass preferencesLoadedFromBundle:bundle];
+				NSArray* panes = [paneClass preferencesController:self loadedBundle:bundle];
+				if (panes)
+				{
+					[self.panesToLoad addObjectsFromArray:panes];
+				}
 			}
 			else
 			{
@@ -119,51 +125,56 @@ NSString *const SelectedPaneKey = @"SelectedPane";
     }
 }
 
+- (NSString*)panesKey
+{
+
+}
 - (void)loadPreferencesPanes
 {
-	NSString* configKey = @"Panes" EC_CONFIGURATION_STRING;
-	NSDictionary* panes = self.options[configKey] ?: self.options[@"Panes"];
 
-	ECDebug(ECPreferencesChannel, @"Attempting to load panes %@", panes);
+	ECDebug(ECPreferencesChannel, @"Attempting to load panes %@", self.panesToLoad);
 
-	NSUInteger count = [panes count];
-	NSMutableArray* names = [NSMutableArray arrayWithCapacity:count];
-	NSMutableDictionary* index = [NSMutableDictionary dictionaryWithCapacity:count];
-	for (NSString* name in panes)
+	NSUInteger count = [self.panesToLoad count];
+	self.paneNames = [NSMutableArray arrayWithCapacity:count];
+	self.panes = [NSMutableDictionary dictionaryWithCapacity:count];
+	for (NSDictionary* paneInfo in self.panesToLoad)
 	{
-		Class class = NSClassFromString(name);
-		if (class)
+		[self loadPaneWithInfo:paneInfo];
+	}
+}
+
+- (void)loadPaneWithInfo:(NSDictionary*)info
+{
+	NSString* className = info[@"Class"];
+	Class class = NSClassFromString(className);
+	if (class)
+	{
+		ECPWPane* pane = [[class alloc] init];
+		if (pane)
 		{
-			ECPWPane* pane = [[class alloc] init];
-			if (pane)
+			if (pane.paneView)
 			{
-				if (pane.paneView)
-				{
-					ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
-					pane.options = panes[name];
-					[names addObject:name];
-					[index setObject:pane forKey:name];
-				}
-				else
-				{
-					ECDebug(ECPreferencesChannel, @"Loaded pane %@ but couldn't load view.", pane);
-				}
-				[pane release];
+				ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
+				pane.options = info;
+				NSString* identfier = [pane identifier];
+				[self.paneNames addObject:identfier];
+				[self.panes setObject:pane forKey:identfier];
 			}
 			else
 			{
-				ECDebug(ECPreferencesChannel, @"Couldn't load pane class %@", class);
+				ECDebug(ECPreferencesChannel, @"Loaded pane %@ but couldn't load view.", pane);
 			}
+			[pane release];
 		}
 		else
 		{
-			ECDebug(ECPreferencesChannel, @"Couldn't find pane class %@", name);
+			ECDebug(ECPreferencesChannel, @"Couldn't load pane class %@", class);
 		}
-
 	}
-
-	self.paneNames = names;
-	self.panes = index;
+	else
+	{
+		ECDebug(ECPreferencesChannel, @"Couldn't find pane class %@", className);
+	}
 }
 
 // ************************************************
@@ -231,7 +242,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	{
 		self.window = window;
 		[self createToolbar];
-		[self loadPane:pane display:NO];
+		[self showPane:pane display:NO];
         if (shouldDisplay)
 		{
             [window makeKeyAndOrderFront:nil];
@@ -260,16 +271,16 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (void)selectPaneWithIdentifier:(NSString*)identifier
 {
-	[self loadPaneWithIdentifier:identifier display:YES];
+	[self showPaneWithIdentifier:identifier display:YES];
 }
 
-- (void)loadPaneWithIdentifier:(NSString*)name display:(BOOL)display
+- (void)showPaneWithIdentifier:(NSString*)name display:(BOOL)display
 {
 	ECPWPane* pane = [self paneWithIdentifier:name];
 	BOOL result;
     if (pane)
 	{
-		[self loadPane:pane display:display];
+		[self showPane:pane display:display];
 	}
 	else
 	{
@@ -277,7 +288,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
     }
 }
 
-- (void)loadPane:(ECPWPane*)pane display:(BOOL)display
+- (void)showPane:(ECPWPane*)pane display:(BOOL)display
 {
 	NSWindow* window = self.window;
     NSView* view = [pane paneView];
@@ -375,7 +386,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (void)selectPaneWithItem:(NSToolbarItem*)item
 {
-	[self loadPaneWithIdentifier:[item itemIdentifier] display:YES];
+	[self showPaneWithIdentifier:[item itemIdentifier] display:YES];
 }
 
 // --------------------------------------------------------------------------

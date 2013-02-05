@@ -28,6 +28,7 @@
 		22E60DB616C0063800C988C9 /* ECPreferencesWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E60DB516C0063800C988C9 /* ECPreferencesWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22E60DF616C1243300C988C9 /* ECPWBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E60DCB16C01C5E00C988C9 /* ECPWBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22E60E0716C12F0500C988C9 /* ECPWBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E60E0616C12F0500C988C9 /* ECPWBundle.m */; };
+		22E60E0916C143B600C988C9 /* ECPWBundle.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 22E60E0816C143B600C988C9 /* ECPWBundle.xcconfig */; };
 		22E85D8515E42E7C00E67F50 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E85D8415E42E7C00E67F50 /* libcrypto.dylib */; };
 		22E85D8715E42E8900E67F50 /* ECCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22E85D8615E42E8900E67F50 /* ECCore.framework */; };
 /* End PBXBuildFile section */
@@ -50,7 +51,6 @@
 		2204C7EB15E282BB00F71E15 /* ECPWController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPWController.h; sourceTree = "<group>"; };
 		2204C7EC15E282BB00F71E15 /* ECPWController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWController.m; sourceTree = "<group>"; };
 		221662E914FB9315009B975D /* ECCoreTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ECCoreTests.plist; path = Resources/Tests/ECCoreTests.plist; sourceTree = SOURCE_ROOT; };
-		2227BD1E15E4EF9F001DCE0D /* ECPreferencePane.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ECPreferencePane.xcconfig; sourceTree = "<group>"; };
 		2229674F1354EDC5005F42E7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		223CBAE61205C6380008A641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		22552BC7134B9E5300B8894E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -104,6 +104,7 @@
 		22E60DC516C00DFB00C988C9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		22E60DCB16C01C5E00C988C9 /* ECPWBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ECPWBundle.h; sourceTree = "<group>"; };
 		22E60E0616C12F0500C988C9 /* ECPWBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWBundle.m; sourceTree = "<group>"; };
+		22E60E0816C143B600C988C9 /* ECPWBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ECPWBundle.xcconfig; sourceTree = "<group>"; };
 		22E85D8415E42E7C00E67F50 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libcrypto.dylib; sourceTree = DEVELOPER_DIR; };
 		22E85D8615E42E8900E67F50 /* ECCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECCore.framework; path = "/Caches/DerivedData/timekeeper-cdbrayceoisycccsdfcpscnhxtzs/Build/Products/Debug/ECCore.framework"; sourceTree = "<absolute>"; };
 		22EC40A61358A0D1005C1F1A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
@@ -239,7 +240,7 @@
 				2260A31215DFD96D0057C9DA /* MacUnitTestDebug.xcconfig */,
 				2260A31315DFD96D0057C9DA /* MacUnitTestRelease.xcconfig */,
 				2260A39615DFDC600057C9DA /* Shared.xcconfig */,
-				2227BD1E15E4EF9F001DCE0D /* ECPreferencePane.xcconfig */,
+				22E60E0816C143B600C988C9 /* ECPWBundle.xcconfig */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -404,6 +405,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22E60E0916C143B600C988C9 /* ECPWBundle.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

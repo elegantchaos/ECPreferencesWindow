@@ -4,9 +4,13 @@
 //  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
-WRAPPER_EXTENSION = preferencePane
+// Defaults for standard definitions needed to link an ECPWBundle
 
-PRODUCT_NAME=$(TARGET_NAME)
-
+DYLIB_COMPATIBILITY_VERSION = 1
+DYLIB_CURRENT_VERSION = 1
+FRAMEWORK_VERSION = A
+PRODUCT_NAME = $(TARGET_NAME)
+WRAPPER_EXTENSION = preferences
+INSTALL_PATH = @rpath
 OTHER_LDFLAGS = -undefined dynamic_lookup
 LD_RUNPATH_SEARCH_PATHS = @loaderpath/Contents/MacOS

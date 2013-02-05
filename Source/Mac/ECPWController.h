@@ -156,7 +156,12 @@
  @param identifier The identifier of the pane to select.
  */
 
-- (void)selectPaneWithIdentifier:(NSString*)identifier;
+- (void)showPaneWithIdentifier:(NSString*)identifier;
 
+/**
+ Hide the preferences window.
+ */
+
+- (void)hidePreferencesWindow;
 
 @end

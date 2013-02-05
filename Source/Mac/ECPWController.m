@@ -270,8 +270,9 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	return result;
 }
 
-- (void)selectPaneWithIdentifier:(NSString*)identifier
+- (void)showPaneWithIdentifier:(NSString*)identifier
 {
+	[self showPreferencesWindow];
 	[self showPaneWithIdentifier:identifier display:YES];
 }
 
@@ -349,6 +350,10 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	[window setInitialFirstResponder: nextKey];
 }
 
+- (void)hidePreferencesWindow
+{
+	[self.window performClose:self];
+}
 
 #pragma mark - Toolbar
 

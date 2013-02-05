@@ -6,20 +6,23 @@
 
 @class ECPWController;
 
+/**
+ Preference panes are the panels that are shown one at a time by the
+ preferences window.
+
+ Each pane has an identifier, used to keep track of it internally, and a 
+ name, used for display purposes.
+ 
+ Panes also have an icon and a tooltip.
+ */
+
 @interface ECPWPane : NSObject
-{
-    IBOutlet NSView *prefsView;
-}
 
 @property (strong, nonatomic) NSDictionary* options;
 @property (strong, nonatomic) NSToolbarItem* toolbarItem;
+@property (assign, nonatomic) IBOutlet NSView* view;
 
 - (void) paneDidLoad;
-
-
-//	paneView returns a preference pane's view. This must not be nil.
-
-- (NSView *)paneView;
 
 - (NSString*)identifier;
 - (NSString*)name;

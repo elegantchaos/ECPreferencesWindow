@@ -9,11 +9,21 @@
 
 @implementation ECPWPane
 
-- (NSView *)paneView
+@synthesize view = _view;
+
+- (void)dealloc
+{
+	[_options release];
+	[_toolbarItem release];
+
+	[super dealloc];
+}
+
+- (NSView*)view
 {
     BOOL loaded = YES;
     
-    if (!prefsView) 
+    if (!_view)
 	{
 		NSString* bundle = self.options[@"Bundle"];
 		if (!bundle)
@@ -27,10 +37,9 @@
     if (loaded) 
 	{
 		[self paneDidLoad];
-        return prefsView;
     }
     
-    return nil;
+    return _view;
 }
 
 - (NSString*)identifier

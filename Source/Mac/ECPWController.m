@@ -154,7 +154,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		ECPWPane* pane = [[class alloc] init];
 		if (pane)
 		{
-			if (pane.paneView)
+			if (pane.view)
 			{
 				ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
 				pane.options = info;
@@ -293,7 +293,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)showPane:(ECPWPane*)pane display:(BOOL)display
 {
 	NSWindow* window = self.window;
-    NSView* view = [pane paneView];
+    NSView* view = pane.view;
 
 	ECAssertNonNil(window);
 	ECAssertNonNil(view);

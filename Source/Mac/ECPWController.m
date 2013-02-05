@@ -151,13 +151,12 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	Class class = NSClassFromString(className);
 	if (class)
 	{
-		ECPWPane* pane = [[class alloc] init];
+		ECPWPane* pane = [[class alloc] initWithInfo:info];
 		if (pane)
 		{
 			if (pane.view)
 			{
 				ECDebug(ECPreferencesChannel, @"Loaded pane %@", pane);
-				pane.options = info;
 				NSString* identfier = [pane identifier];
 				[self.paneNames addObject:identfier];
 				[self.panes setObject:pane forKey:identfier];

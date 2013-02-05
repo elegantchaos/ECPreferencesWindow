@@ -6,14 +6,29 @@
 
 #import "ECPWPane.h"
 
+@interface ECPWPane()
+
+@property (strong, nonatomic) NSDictionary* info;
+
+@end
 
 @implementation ECPWPane
 
 @synthesize view = _view;
 
+- (id)initWithInfo:(NSDictionary *)info
+{
+	if ((self = [super init]) != nil)
+	{
+		self.info = info;
+	}
+
+	return self;
+}
+
 - (void)dealloc
 {
-	[_options release];
+	[_info release];
 	[_toolbarItem release];
 
 	[super dealloc];
@@ -25,7 +40,7 @@
     
     if (!_view)
 	{
-		NSString* bundle = self.options[@"Bundle"];
+		NSString* bundle = self.info[@"Bundle"];
 		if (!bundle)
 		{
 			bundle = [self identifier];
@@ -44,7 +59,7 @@
 
 - (NSString*)identifier
 {
-	NSString* result = self.options[@"Identifier"];
+	NSString* result = self.info[@"Identifier"];
 	if (!result)
 	{
 		result = NSStringFromClass([self class]);
@@ -56,7 +71,7 @@
 
 - (NSString*)name
 {
-	NSString* name = self.options[@"Name"];
+	NSString* name = self.info[@"Name"];
 	if (!name)
 	{
 		name = [self identifier];
@@ -67,7 +82,7 @@
 
 - (NSImage *)icon
 {
-	NSString* name = self.options[@"Icon"];
+	NSString* name = self.info[@"Icon"];
 	if (!name)
 	{
 		name = [self identifier];
@@ -85,7 +100,7 @@
 
 - (NSString*)toolTip
 {
-	NSString* result = self.options[@"ToolTip"];
+	NSString* result = self.info[@"ToolTip"];
 
     return result;
 }

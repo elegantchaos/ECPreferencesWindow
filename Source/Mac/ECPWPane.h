@@ -7,8 +7,8 @@
 @class ECPWController;
 
 /**
- Preference panes are the panels that are shown one at a time by the
- preferences window.
+ Preference panes are the panels that are shown one at a time in the
+ window managed by the <ECPWController> class.
 
  Each pane has an identifier, used to keep track of it internally, and a 
  name, used for display purposes.

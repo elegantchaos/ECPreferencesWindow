@@ -101,7 +101,6 @@
 		22D55C4D14FB8D640052EA01 /* libECLoggingMac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libECLoggingMac.a; path = ../ECLogging/build/Release/libECLoggingMac.a; sourceTree = "<group>"; };
 		22D55C4E14FB8D640052EA01 /* libECUnitTestsMac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libECUnitTestsMac.a; path = ../ECUnitTests/build/Release/libECUnitTestsMac.a; sourceTree = "<group>"; };
 		22E60DB516C0063800C988C9 /* ECPreferencesWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindow.h; sourceTree = "<group>"; };
-		22E60DC416C00DFB00C988C9 /* Design.md */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Design.md; sourceTree = "<group>"; };
 		22E60DC516C00DFB00C988C9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		22E60DCB16C01C5E00C988C9 /* ECPWBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ECPWBundle.h; sourceTree = "<group>"; };
 		22E60E0616C12F0500C988C9 /* ECPWBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWBundle.m; sourceTree = "<group>"; };
@@ -156,7 +155,6 @@
 		0867D691FE84028FC02AAC07 /* ECFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				22E60DC416C00DFB00C988C9 /* Design.md */,
 				22E60DC516C00DFB00C988C9 /* README.md */,
 				2260A30B15DFD8FB0057C9DA /* Source */,
 				089C1665FE841158C02AAC07 /* Resources */,

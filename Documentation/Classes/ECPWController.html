@@ -110,7 +110,7 @@ toolbar icon.</p>
 <p>The class isn&rsquo;t a singleton, although typically you&rsquo;ll simply make one instance
 and store it somewhere (eg in your application delegate).</p>
 
-<p>Call <showPreferencesWindow> to show the preferences window.</p>
+<p>Call showPreferencesWindow to show the preferences window.</p>
 
 <pre><code>ECPWController* controller = [ECPWController preferencesWindowController];
 [controller showPreferencesWindow];
@@ -119,7 +119,7 @@ and store it somewhere (eg in your application delegate).</p>
 <h1>Initialisation And Configuration</h1>
 
 <p>Most configuration is done via the ECPreferencesWindow key of the application&rsquo;s
-info.plist file.</p>
+Info.plist file.</p>
 
 <p>This key should contain a dictionary.</p>
 
@@ -138,31 +138,44 @@ info.plist file.</p>
 <p>The Panes key should contain a list of dictionaries. Each of these
 describes a pane to add to the preferences window.</p>
 
-<p>Each pane dictionary can contain the following keys:
-&ndash; Class (required): the class to use for the pane.
-&ndash; Identifier: the identifier to use for the pane. Defaults to the class name.
-&ndash; Name: the text label to use for the pane. Defaults to the class name.
-&ndash; Icon: the name of the icon image to use for the panel. Defaults to the class name.
-&ndash; ToolTip: tooltip text to use for the pane. Defaults to nil.</p>
+<p>Each pane dictionary can contain the following keys:</p>
+
+<ul>
+<li>Class (required): the class to use for the pane.</li>
+<li>Identifier: the identifier to use for the pane. Defaults to the class name.</li>
+<li>Name: the text label to use for the pane. Defaults to the class name.</li>
+<li>Icon: the name of the icon image to use for the panel. Defaults to the class name.</li>
+<li>ToolTip: tooltip text to use for the pane. Defaults to nil.</li>
+</ul>
+
 
 <h1>Preference Bundles</h1>
 
-<p>In addition to loading the panes described in main application&rsquo;s info.plist, the
+<p>In addition to loading the panes described in main application&rsquo;s Info.plist, the
 controller also scans a folder for preference bundles, and loads any that it finds.</p>
 
-<p>Each of these bundles is then asked to provide a list of pane dictionaries for additional
-panes to load.</p>
+<p>The principal class for each of these bundles should inherit from ECPWBundle.</p>
 
-<h1>Timing</h1>
+<p>When a preferences bundle is loaded, [ECPWBundle preferencesController:loadedBundle:] is called on this class.</p>
+
+<p>This method should return a list of dictionaries with additional panes to load.</p>
+
+<p>The default implementation of the method does this by looking in the bundle&rsquo;s Info.plist file
+for an ECPreferencesWindow key, and taking a list of panes from the Panes sub-key (this mirrors
+the process used to load panes from the main application&rsquo;s Info.plist).</p>
+
+<h1>Loading</h1>
 
 <p>The bundles folder is scanned when the controller is first created, and any preference
-bundles that are found get called at this point in order to set themselves up.</p>
+bundles that are found get loaded and called at this point in order to set themselves up.</p>
 
 <p>This allows preferences bundles to add features to an application when it first starts up,
 rather than only doing something when the preferences window is shown.</p>
 
 <p>The pane classes themselves are created lazily when the preferences window is first shown,
 so it&rsquo;s quite possible that they will never be created at all for a given run of an application.</p>
+
+<p>When a pane is loaded, <a href="../Classes/ECPWPane.html#//api/name/paneDidLoad">[ECPWPane paneDidLoad]</a> is called on it.</p>
 					</div>
 					
 					

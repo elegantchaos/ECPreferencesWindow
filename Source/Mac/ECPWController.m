@@ -57,7 +57,6 @@ NSString *const SelectedPaneKey = @"SelectedPane";
         self.alwaysShowsToolbar = [self.options[@"AlwaysShowsToolbar"] boolValue];
         self.centreFirstTimeOnly = [self.options[@"CentreFirstTimeOnly"] boolValue];
 
-
 		[self loadPreferencesBundlesInBundle:bundle];
     }
 
@@ -102,18 +101,19 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		Class paneClass = [bundle principalClass];
 		if (paneClass)
 		{
-			if ([paneClass isSubclassOfClass:[ECPWBundle class]])
+			// if the principal class doesn't inherit from ECPWBundle, we just do the default ECPWBundle behaviour instead,
+			// which is to try to get a list of panes to load from the Info.plist.
+			if (![paneClass isSubclassOfClass:[ECPWBundle class]])
 			{
-				ECDebug(ECPreferencesChannel, @"Loaded preferences bundle %@", paneClass);
-				NSArray* additionalPanesToLoad = [paneClass preferencesController:self loadedBundle:bundle];
-				if (additionalPanesToLoad)
-				{
-					[self.panesToLoad addObjectsFromArray:additionalPanesToLoad];
-				}
+				ECDebug(ECPreferencesChannel, @"Preferences bundle %@ doesn't inherit from ECPWBundle - using ECPWBundle instead.", bundle);
+				paneClass = [ECPWBundle class];
 			}
-			else
+
+			ECDebug(ECPreferencesChannel, @"Loaded preferences bundle %@", paneClass);
+			NSArray* additionalPanesToLoad = [paneClass preferencesController:self loadedBundle:bundle];
+			if (additionalPanesToLoad)
 			{
-				ECDebug(ECPreferencesChannel, @"Preferences bundle %@ doesn't implement ECPWPreferencesBundle protocol.", bundle);
+				[self.panesToLoad addObjectsFromArray:additionalPanesToLoad];
 			}
 		}
 

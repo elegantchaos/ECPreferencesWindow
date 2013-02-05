@@ -69,6 +69,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 {
 	[_options release];
 	[_paneNames release];
+	[_panesToLoad release];
 	[_panes release];
 	[_toolbar release];
 	[_window release];
@@ -187,6 +188,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 {
     if (self.window)
 	{
+		ECDebug(ECPreferencesChannel, @"Showing preferences window");
         if (!self.centreFirstTimeOnly && ![self.window isVisible])
 		{
             [self.window center];
@@ -221,6 +223,8 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 - (void)createPreferencesWindowAndDisplay:(BOOL)shouldDisplay
 {
+	ECDebug(ECPreferencesChannel, @"Creating preferences window");
+	
 	NSWindow* window = [self createWindow];
 	
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];

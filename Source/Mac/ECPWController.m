@@ -153,7 +153,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		}
 
 		ECDebug(PreferencesWindowChannel, @"Loaded preferences bundle %@", paneClass);
-		ECPWBundle* ourBundle = [[ECPWBundle alloc] initWithController:self bundle:bundle];
+		ECPWBundle* ourBundle = [[paneClass alloc] initWithController:self bundle:bundle];
 		[self.bundles addObject:ourBundle];
 		NSArray* additionalPanesToLoad = [ourBundle panesToLoad];
 		if (additionalPanesToLoad)

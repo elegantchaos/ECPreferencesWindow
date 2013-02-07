@@ -44,11 +44,11 @@
 	
 	<option value="//api/name/centreFirstTimeOnly">&nbsp;&nbsp;&nbsp;&nbsp;centreFirstTimeOnly</option>
 	
+	<option value="//api/name/style">&nbsp;&nbsp;&nbsp;&nbsp;style</option>
+	
 	<option value="//api/name/toolbarDisplayMode">&nbsp;&nbsp;&nbsp;&nbsp;toolbarDisplayMode</option>
 	
 	<option value="//api/name/toolbarSizeMode">&nbsp;&nbsp;&nbsp;&nbsp;toolbarSizeMode</option>
-	
-	<option value="//api/name/usesTexturedWindow">&nbsp;&nbsp;&nbsp;&nbsp;usesTexturedWindow</option>
 	
 	<option value="//api/name/window">&nbsp;&nbsp;&nbsp;&nbsp;window</option>
 	
@@ -64,9 +64,11 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
+	<option value="//api/name/hidePreferencesWindow">&nbsp;&nbsp;&nbsp;&nbsp;- hidePreferencesWindow</option>
+	
 	<option value="//api/name/initLoadingPanesFromBundle:">&nbsp;&nbsp;&nbsp;&nbsp;- initLoadingPanesFromBundle:</option>
 	
-	<option value="//api/name/selectPaneWithIdentifier:">&nbsp;&nbsp;&nbsp;&nbsp;- selectPaneWithIdentifier:</option>
+	<option value="//api/name/showPaneWithIdentifier:">&nbsp;&nbsp;&nbsp;&nbsp;- showPaneWithIdentifier:</option>
 	
 	<option value="//api/name/showPreferencesWindow">&nbsp;&nbsp;&nbsp;&nbsp;- showPreferencesWindow</option>
 	
@@ -98,11 +100,11 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/centreFirstTimeOnly">centreFirstTimeOnly</a></span></li>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/style">style</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toolbarDisplayMode">toolbarDisplayMode</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/toolbarSizeMode">toolbarSizeMode</a></span></li>
-	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/usesTexturedWindow">usesTexturedWindow</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/window">window</a></span></li>
 	
@@ -120,9 +122,11 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hidePreferencesWindow">hidePreferencesWindow</a></span></li>
+	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initLoadingPanesFromBundle:">initLoadingPanesFromBundle:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/selectPaneWithIdentifier:">selectPaneWithIdentifier:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/showPaneWithIdentifier:">showPaneWithIdentifier:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/showPreferencesWindow">showPreferencesWindow</a></span></li>
 	
@@ -193,10 +197,10 @@ Info.plist file.</p>
 <p>A number of values in this dictionary configure the behaviour of the window:</p>
 
 <ul>
-<li>UsesTexturedWindow: should the preferences window be textured? Defaults to NO.</li>
+<li>Style: window style flags to use. Defaults to NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask.</li>
 <li>AlwaysShowsToolbar: should the toolbar be visible even if there is just one pane? Defaults to NO.</li>
 <li>CentreFirstTimeOnly: should the window only be centered when it&rsquo;s created (YES), or every time it is shown (NO). Defaults to NO.</li>
-<li>BundleDirectory: the name of the directory to look for preference bundles in. Defaults to &ldquo;Preferences&rdquo;.</li>
+<li>BundleDirectory: the name of the directory to look for preference bundles in. Defaults to &ldquo;PlugIns&rdquo;.</li>
 <li>BundleExtension: the extension to look for in the bundle directory. Defaults to &ldquo;preferences&rdquo;.</li>
 <li>ToolbarDisplayMode: the display mode to use for the toolbar. Defaults to NSToolbarDisplayModeDefault.</li>
 <li>ToolbarSizeMode: the display size mode to use for the toolbar. Defaults to NSToolbarSizeModeDefault.</li>
@@ -262,8 +266,8 @@ so it&rsquo;s quite possible that they will never be created at all for a given 
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/usesTexturedWindow">&nbsp;&nbsp;usesTexturedWindow</a></code>
-		<span class="tooltip"><p>Should the preferences <a href="#//api/name/window">window</a> be textured?</p></span>
+		<code><a href="#//api/name/style">&nbsp;&nbsp;style</a></code>
+		<span class="tooltip"><p>Window style flags to use. Defaults to NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -326,8 +330,15 @@ The previously selected pane is shown by default, or the first pane if none was 
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/selectPaneWithIdentifier:">&ndash;&nbsp;selectPaneWithIdentifier:</a></code>
+		<code><a href="#//api/name/showPaneWithIdentifier:">&ndash;&nbsp;showPaneWithIdentifier:</a></code>
 		<span class="tooltip"><p>Show the preferences <a href="#//api/name/window">window</a> and select a given pane.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hidePreferencesWindow">&ndash;&nbsp;hidePreferencesWindow</a></code>
+		<span class="tooltip"><p>Hide the preferences <a href="#//api/name/window">window</a>.</p></span>
 	</span>
 	
 	
@@ -417,6 +428,42 @@ The previously selected pane is shown by default, or the first pane if none was 
 </div>
 						
 						<div class="section-method">
+	<a name="//api/name/style" title="style"></a>
+	<h3 class="subsubtitle method-title">style</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Window style flags to use. Defaults to NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (assign, nonatomic) NSUInteger style</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECPWController.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/toolbarDisplayMode" title="toolbarDisplayMode"></a>
 	<h3 class="subsubtitle method-title">toolbarDisplayMode</h3>
 	
@@ -465,42 +512,6 @@ The previously selected pane is shown by default, or the first pane if none was 
     
 
 	<div class="method-subsection method-declaration"><code>@property (assign, nonatomic) NSToolbarSizeMode toolbarSizeMode</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">ECPWController.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/usesTexturedWindow" title="usesTexturedWindow"></a>
-	<h3 class="subsubtitle method-title">usesTexturedWindow</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Should the preferences <a href="#//api/name/window">window</a> be textured?</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (assign, nonatomic) BOOL usesTexturedWindow</code></div>
 
     
 	
@@ -618,6 +629,42 @@ The previously selected pane is shown by default, or the first pane if none was 
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
+	<a name="//api/name/hidePreferencesWindow" title="hidePreferencesWindow"></a>
+	<h3 class="subsubtitle method-title">hidePreferencesWindow</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Hide the preferences <a href="#//api/name/window">window</a>.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)hidePreferencesWindow</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECPWController.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
 	<a name="//api/name/initLoadingPanesFromBundle:" title="initLoadingPanesFromBundle:"></a>
 	<h3 class="subsubtitle method-title">initLoadingPanesFromBundle:</h3>
 	
@@ -675,8 +722,8 @@ bundle, and the bundle is scanned for additional preferences bundles to load.</p
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/selectPaneWithIdentifier:" title="selectPaneWithIdentifier:"></a>
-	<h3 class="subsubtitle method-title">selectPaneWithIdentifier:</h3>
+	<a name="//api/name/showPaneWithIdentifier:" title="showPaneWithIdentifier:"></a>
+	<h3 class="subsubtitle method-title">showPaneWithIdentifier:</h3>
 	
 	
 	
@@ -686,7 +733,7 @@ bundle, and the bundle is scanned for additional preferences bundles to load.</p
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)selectPaneWithIdentifier:(NSString *)<em>identifier</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)showPaneWithIdentifier:(NSString *)<em>identifier</em></code></div>
 
     
 	
@@ -770,7 +817,7 @@ The previously selected pane is shown by default, or the first pane if none was 
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2013 Elegant Chaos. All rights reserved. (Last updated: 2013-02-05)</span><br />
+						<p><span class="copyright">&copy; 2013 Elegant Chaos. All rights reserved. (Last updated: 2013-02-07)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 858)</a>.</span></p>
 						

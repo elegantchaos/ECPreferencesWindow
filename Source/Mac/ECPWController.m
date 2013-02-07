@@ -54,9 +54,11 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
         self.toolbarDisplayMode = [self.options[@"ToolbarDisplayMode"] integerValue];
         self.toolbarSizeMode = [self.options[@"ToolbarSizeMode"] integerValue];
-        self.usesTexturedWindow = [self.options[@"UsesTexturedWindow"] boolValue];
         self.alwaysShowsToolbar = [self.options[@"AlwaysShowsToolbar"] boolValue];
         self.centreFirstTimeOnly = [self.options[@"CentreFirstTimeOnly"] boolValue];
+
+		NSNumber* style = self.options[@"Style"];
+		self.style = style ? [style integerValue] : (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
 
 		[self loadPreferencesBundlesInBundle:bundle];
     }
@@ -81,6 +83,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
     [super dealloc];
 }
 
+#pragma mark - Loading
 
 - (void)loadPreferencesBundlesInBundle:(NSBundle*)bundle
 {
@@ -133,10 +136,6 @@ NSString *const SelectedPaneKey = @"SelectedPane";
     }
 }
 
-- (NSString*)panesKey
-{
-
-}
 - (void)loadPreferencesPanes
 {
 
@@ -184,6 +183,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	}
 }
 
+#pragma mark - Panes
 
 - (ECPWPane*)paneWithIdentifier:(NSString*)identifier
 {
@@ -299,25 +299,10 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	}
 }
 
-- (void)hidePreferencesWindow
-{
-	[self.window performClose:self];
-}
-
-
 
 - (void)selectPaneWithItem:(NSToolbarItem*)item
 {
 	[self showPaneWithIdentifier:[item itemIdentifier] display:YES];
-}
-
-// --------------------------------------------------------------------------
-//! Close the window.
-// --------------------------------------------------------------------------
-
-- (IBAction) alternatePerformClose: (id) sender
-{
-	[self.window performClose:sender];
 }
 
 
@@ -374,17 +359,21 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	}
 }
 
+- (void)hidePreferencesWindow
+{
+	[self.window performClose:self];
+}
+
+- (IBAction) alternatePerformClose: (id) sender
+{
+	[self.window performClose:sender];
+}
+
 - (NSWindow*)createWindow
 {
 	[self loadPreferencesPanes];
 
-    NSUInteger styleMask = (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
-    if (self.usesTexturedWindow)
-	{
-        styleMask = (styleMask | NSTexturedBackgroundWindowMask);
-    }
-
-    NSWindow* window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 350, 200) styleMask:styleMask backing:NSBackingStoreBuffered defer:NO];
+    NSWindow* window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 350, 200) styleMask:self.style backing:NSBackingStoreBuffered defer:NO];
 	window.delegate = self;
     [window setReleasedWhenClosed:NO];
     [window setTitle:@"Preferences"]; // initial default title

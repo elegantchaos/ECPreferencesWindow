@@ -33,7 +33,7 @@
  
  A number of values in this dictionary configure the behaviour of the window:
  
- - UsesTexturedWindow: should the preferences window be textured? Defaults to NO.
+ - Style: window style flags to use. Defaults to NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask.
  - AlwaysShowsToolbar: should the toolbar be visible even if there is just one pane? Defaults to NO.
  - CentreFirstTimeOnly: should the window only be centered when it's created (YES), or every time it is shown (NO). Defaults to NO.
  - BundleDirectory: the name of the directory to look for preference bundles in. Defaults to "PlugIns".
@@ -88,10 +88,10 @@
 @interface ECPWController : NSObject<NSToolbarDelegate, NSWindowDelegate>
 
 /**
- Should the preferences window be textured?
+ Window style flags to use. Defaults to NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask.
  */
 
-@property (assign, nonatomic) BOOL usesTexturedWindow;
+@property (assign, nonatomic) NSUInteger style;
 
 /** 
  Should the toolbar be visible even if there's only one panel?

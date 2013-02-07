@@ -10,6 +10,8 @@
 
 @interface ECPWController()
 
+@property (strong, nonatomic) NSString* directory;
+@property (strong, nonatomic) NSString* extension;
 @property (strong, nonatomic) NSDictionary* options;
 @property (strong, nonatomic) NSMutableArray* paneNames;
 @property (strong, nonatomic) NSMutableArray* panesToLoad;
@@ -56,6 +58,8 @@ NSString *const SelectedPaneKey = @"SelectedPane";
         self.toolbarSizeMode = [self.options[@"ToolbarSizeMode"] integerValue];
         self.alwaysShowsToolbar = [self.options[@"AlwaysShowsToolbar"] boolValue];
         self.centreFirstTimeOnly = [self.options[@"CentreFirstTimeOnly"] boolValue];
+		self.extension = self.options[@"BundleExtension"] ?: @"preferences";
+		self.directory = self.options[@"BundleDirectory"] ?: @"PlugIns";
 
 		NSNumber* style = self.options[@"Style"];
 		self.style = style ? [style integerValue] : (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
@@ -73,6 +77,8 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 	[self.current paneDidHide];
 
 	[_current release];
+	[_directory release];
+	[_extension release];
 	[_options release];
 	[_paneNames release];
 	[_panesToLoad release];
@@ -85,19 +91,45 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 #pragma mark - Loading
 
+- (void)loadPreferencesBundlesInLibrary
+{
+	NSString* bundleID = [[NSBundle mainBundle] bundleIdentifier];
+
+	NSFileManager* fm = [NSFileManager defaultManager];
+	NSArray* libraries = [fm URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask | NSLocalDomainMask];
+	for (NSURL* library in libraries)
+	{
+		NSURL* folder = [[library URLByAppendingPathComponent:bundleID] URLByAppendingPathComponent:self.directory];
+		[self loadPreferencesBundlesInFolder:folder];
+	}
+}
+
 - (void)loadPreferencesBundlesInBundle:(NSBundle*)bundle
 {
-	NSString* extension = self.options[@"BundleExtension"] ?: @"preferences";
-	NSString* directory = self.options[@"BundleDirectory"] ?: @"PlugIns";
-
-	ECDebug(PreferencesWindowChannel, @"Loading preferences bundles *.%@ in %@ of %@", extension, directory, bundle);
 
 	NSURL* prefsFolder = [[bundle bundleURL] URLByAppendingPathComponent:@"Contents/Preferences"];
-	NSError* error;
-	NSArray* bundles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:prefsFolder includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:&error];
-	for (NSURL* url in bundles)
+	[self loadPreferencesBundlesInFolder:prefsFolder];
+}
+
+- (void)loadPreferencesBundlesInFolder:(NSURL*)folder
+{
+	ECDebug(PreferencesWindowChannel, @"Loading preferences bundles *.%@ in %@", self.extension, folder);
+
+	NSError* error = nil;
+	NSArray* urls = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:folder includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsSubdirectoryDescendants error:&error];
+	if (urls)
 	{
-		[self loadPreferencesBundleAtURL:url];
+		for (NSURL* url in urls)
+		{
+			if ([[url pathExtension] isEqualToString:self.extension])
+			{
+				[self loadPreferencesBundleAtURL:url];
+			}
+		}
+	}
+	else
+	{
+		[ECErrorReporter reportError:error message:@"Error whilst loading preference bundles in %@", folder];
 	}
 }
 

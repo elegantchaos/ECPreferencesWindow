@@ -65,6 +65,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		self.style = style ? [style integerValue] : (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
 
 		[self loadPreferencesBundlesInBundle:bundle];
+		[self loadPreferencesBundlesInLibrary];
     }
 
     return self;
@@ -127,7 +128,9 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 			}
 		}
 	}
-	else
+
+	// a no such file error is fine here, anything else should be reported
+	else if (![error.domain isEqualToString:NSCocoaErrorDomain] || (error.code != NSFileReadNoSuchFileError))
 	{
 		[ECErrorReporter reportError:error message:@"Error whilst loading preference bundles in %@", folder];
 	}

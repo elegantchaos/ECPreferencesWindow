@@ -8,6 +8,7 @@
 
 @interface ECPWPane()
 
+
 @property (strong, nonatomic) NSDictionary* info;
 
 @end
@@ -122,20 +123,44 @@
 	return _toolbarItem;
 }
 
-- (BOOL)allowsHorizontalResizing
+- (void)paneDidLoad
 {
-    return NO;
+	
 }
 
+- (void)paneWillShow
+{
+
+}
+
+- (void)paneDidShow
+{
+
+}
+
+- (void)paneWillHide
+{
+
+}
+
+- (void)paneDidHide
+{
+
+}
+
+- (BOOL)allowsHorizontalResizing
+{
+	return [self.info[@"AllowsHorizontalResizing"] boolValue];
+}
 
 - (BOOL)allowsVerticalResizing
 {
-    return NO;
+	return [self.info[@"AllowsVerticalResizing"] boolValue];
 }
 
-- (void) paneDidLoad
+- (NSString*)description
 {
-	
+	return [NSString stringWithFormat:@"<ECPWPane: %@>", self.name];
 }
 
 @end

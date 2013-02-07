@@ -35,6 +35,21 @@
 @property (assign, nonatomic) IBOutlet NSView* view;
 
 /**
+ Can this pane be resized horizontally?
+ @return YES if the pane can be resized horizontally.
+ */
+
+@property (readonly, nonatomic) BOOL allowsHorizontalResizing;
+
+/**
+ Can this pane be resized vertically?
+ @return YES if the pane can be resized vertically.
+ */
+
+@property (readonly, nonatomic) BOOL allowsVerticalResizing;
+
+
+/**
  Set up using information from a dictionary.
  @param info Dictionary defining the name, icon etc to use for the pane.
  @return The new pane.
@@ -46,7 +61,31 @@
  Sent to the pane when it has loaded.
  */
 
-- (void) paneDidLoad;
+- (void)paneDidLoad;
+
+/**
+ Sent to the pane before it is shown.
+ */
+
+- (void)paneWillShow;
+
+/**
+ Sent to the pane when it is shown.
+ */
+
+- (void)paneDidShow;
+
+/**
+ Sent to the pane before it is hidden.
+ */
+
+- (void)paneWillHide;
+
+/**
+ Sent to the pane when it is hidden.
+ */
+
+- (void)paneDidHide;
 
 /**
  The identifier to use for the pane.
@@ -75,20 +114,6 @@
  */
 
 - (NSString *)toolTip;
-
-/**
- Can this pane be resized horizontally?
- @return YES if the pane can be resized horizontally.
- */
-
-- (BOOL)allowsHorizontalResizing;
-
-/**
- Can this pane be resized vertically?
- @return YES if the pane can be resized vertically.
- */
-
-- (BOOL)allowsVerticalResizing;
 
 
 @end

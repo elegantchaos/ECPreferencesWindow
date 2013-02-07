@@ -40,11 +40,13 @@
 	
 	
 	
-	<option value="class_methods">Class Methods</option>
-	
-	<option value="//api/name/preferencesController:loadedBundle:">&nbsp;&nbsp;&nbsp;&nbsp;+ preferencesController:loadedBundle:</option>
 	
 	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/initWithController:bundle:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithController:bundle:</option>
+	
+	<option value="//api/name/panesToLoad">&nbsp;&nbsp;&nbsp;&nbsp;- panesToLoad</option>
 	
 	
 	
@@ -70,13 +72,15 @@
 
 
 
-<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/preferencesController:loadedBundle:">preferencesController:loadedBundle:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithController:bundle:">initWithController:bundle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/panesToLoad">panesToLoad</a></span></li>
 	
 </ul></li>
-
-
 
 
 			</ul>
@@ -117,7 +121,7 @@
 looking for bundles with a given extension (by default, it scans Contents/Preferences for .preferences files).</p>
 
 <p>Each of these bundles is loaded. If the principal class of the bundle inherits from ECPWBundle,
-the <a href="#//api/name/preferencesController:loadedBundle:">preferencesController:loadedBundle:</a> method will be called. This method can return a list of dictionaries
+the preferencesController:loadedBundle: method will be called. This method can return a list of dictionaries
 describing additional panes to load. Typically these panes will be managed by classes defined in
 the bundle, although in fact the pane classes can come from anywhere.</p>
 
@@ -141,7 +145,14 @@ the process used by <a href="../Classes/ECPWController.html">ECPWController</a> 
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/preferencesController:loadedBundle:">+&nbsp;preferencesController:loadedBundle:</a></code>
+		<code><a href="#//api/name/initWithController:bundle:">&ndash;&nbsp;initWithController:bundle:</a></code>
+		<span class="tooltip"><p>Make a new bundle object.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/panesToLoad">&ndash;&nbsp;panesToLoad</a></code>
 		<span class="tooltip"><p>Called when a preferences bundle is loaded.</p></span>
 	</span>
 	
@@ -157,23 +168,25 @@ the process used by <a href="../Classes/ECPWController.html">ECPWController</a> 
 					
 					
 					
+					
+					
 					<div class="section section-methods">
-						<a title="Class Methods" name="class_methods"></a>
-						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/preferencesController:loadedBundle:" title="preferencesController:loadedBundle:"></a>
-	<h3 class="subsubtitle method-title">preferencesController:loadedBundle:</h3>
+	<a name="//api/name/initWithController:bundle:" title="initWithController:bundle:"></a>
+	<h3 class="subsubtitle method-title">initWithController:bundle:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Called when a preferences bundle is loaded.</p>
+		<p>Make a new bundle object.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>+ (NSArray *)preferencesController:(ECPWController *)<em>controller</em> loadedBundle:(NSBundle *)<em>bundle</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (id)initWithController:(ECPWController *)<em>controller</em> bundle:(NSBundle *)<em>bundle</em></code></div>
 
     
 	
@@ -187,10 +200,51 @@ the process used by <a href="../Classes/ECPWController.html">ECPWController</a> 
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>bundle</em></dt>
-			<dd><p>The bundle that the bundle was loaded from.</p></dd>
+			<dd><p>The NSBundle that this object was loaded from.</p></dd>
 		</dl>
 		
 	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The new object.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECPWBundle.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/panesToLoad" title="panesToLoad"></a>
+	<h3 class="subsubtitle method-title">panesToLoad</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Called when a preferences bundle is loaded.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSArray *)panesToLoad</code></div>
+
+    
 	
 	
 	
@@ -218,8 +272,6 @@ the process used by <a href="../Classes/ECPWController.html">ECPWController</a> 
 </div>
 						
 					</div>
-					
-					
 					
 					
 				</div>

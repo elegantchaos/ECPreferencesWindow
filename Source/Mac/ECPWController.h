@@ -165,3 +165,6 @@
 - (void)hidePreferencesWindow;
 
 @end
+
+ECDeclareDebugChannel(PreferencesWindowChannel);
+

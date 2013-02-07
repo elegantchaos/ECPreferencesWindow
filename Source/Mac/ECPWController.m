@@ -108,7 +108,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)loadPreferencesBundlesInBundle:(NSBundle*)bundle
 {
 
-	NSURL* prefsFolder = [[bundle bundleURL] URLByAppendingPathComponent:@"Contents/Preferences"];
+	NSURL* prefsFolder = [[[bundle bundleURL] URLByAppendingPathComponent:@"Contents"] URLByAppendingPathComponent:self.directory];
 	[self loadPreferencesBundlesInFolder:prefsFolder];
 }
 

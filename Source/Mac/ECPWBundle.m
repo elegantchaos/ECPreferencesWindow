@@ -8,11 +8,36 @@
 
 #import "ECPWBundle.h"
 
+@interface ECPWBundle()
+
+@property (strong, nonatomic) NSBundle* bundle;
+@property (assign, nonatomic) ECPWController* controller; // weak reference
+
+@end
+
 @implementation ECPWBundle
 
-+ (NSArray*)preferencesController:(ECPWController*)controller loadedBundle:(NSBundle*)bundle
+- (id)initWithController:(ECPWController*)controller bundle:(NSBundle*)bundle
 {
-	NSDictionary* info = bundle.infoDictionary[@"ECPreferencesWindow"];
+	if ((self = [super init]) != nil)
+	{
+		self.bundle = bundle;
+		self.controller = controller;
+	}
+
+	return self;
+}
+
+- (void)dealloc
+{
+	[_bundle release];
+
+	[super dealloc];
+}
+
+- (NSArray*)panesToLoad
+{
+	NSDictionary* info = self.bundle.infoDictionary[@"ECPreferencesWindow"];
 	NSString* configKey = @"Panes" EC_CONFIGURATION_STRING;
 	NSArray* result = info[configKey] ?: info[@"Panes"];
 

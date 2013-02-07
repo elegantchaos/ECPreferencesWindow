@@ -10,6 +10,7 @@
 
 @interface ECPWController()
 
+@property (strong, nonatomic) NSMutableArray* bundles;
 @property (strong, nonatomic) NSString* directory;
 @property (strong, nonatomic) NSString* extension;
 @property (strong, nonatomic) NSDictionary* options;
@@ -64,6 +65,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 		NSNumber* style = self.options[@"Style"];
 		self.style = style ? [style integerValue] : (NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask);
 
+		self.bundles = [NSMutableArray array];
 		[self loadPreferencesBundlesInBundle:bundle];
 		[self loadPreferencesBundlesInLibrary];
     }
@@ -142,28 +144,23 @@ NSString *const SelectedPaneKey = @"SelectedPane";
     if (bundle)
 	{
 		Class paneClass = [bundle principalClass];
-		if (paneClass)
+		if (!paneClass || ![paneClass isSubclassOfClass:[ECPWBundle class]])
 		{
 			// if the principal class doesn't inherit from ECPWBundle, we just do the default ECPWBundle behaviour instead,
 			// which is to try to get a list of panes to load from the Info.plist.
-			if (![paneClass isSubclassOfClass:[ECPWBundle class]])
-			{
-				ECDebug(PreferencesWindowChannel, @"Preferences bundle %@ doesn't inherit from ECPWBundle - using ECPWBundle instead.", bundle);
-				paneClass = [ECPWBundle class];
-			}
-
-			ECDebug(PreferencesWindowChannel, @"Loaded preferences bundle %@", paneClass);
-			NSArray* additionalPanesToLoad = [paneClass preferencesController:self loadedBundle:bundle];
-			if (additionalPanesToLoad)
-			{
-				[self.panesToLoad addObjectsFromArray:additionalPanesToLoad];
-			}
+			ECDebug(PreferencesWindowChannel, @"Preferences bundle %@ doesn't inherit from ECPWBundle or had no principal class - using ECPWBundle instead.", bundle);
+			paneClass = [ECPWBundle class];
 		}
 
-		else
+		ECDebug(PreferencesWindowChannel, @"Loaded preferences bundle %@", paneClass);
+		ECPWBundle* ourBundle = [[ECPWBundle alloc] initWithController:self bundle:bundle];
+		[self.bundles addObject:ourBundle];
+		NSArray* additionalPanesToLoad = [ourBundle panesToLoad];
+		if (additionalPanesToLoad)
 		{
-			ECDebug(PreferencesWindowChannel, @"Preferences bundle %@ couldn't get principal class", bundle);
+			[self.panesToLoad addObjectsFromArray:additionalPanesToLoad];
 		}
+		[ourBundle release];
     }
 	else
 	{
@@ -174,7 +171,6 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)loadPreferencesPanes
 {
 
-	ECDebug(PreferencesWindowChannel, @"Attempting to load panes %@", self.panesToLoad);
 
 	NSUInteger count = [self.panesToLoad count];
 	self.paneNames = [NSMutableArray arrayWithCapacity:count];
@@ -188,6 +184,8 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)loadPaneWithInfo:(NSDictionary*)info
 {
 	NSString* className = info[@"Class"];
+	ECDebug(PreferencesWindowChannel, @"Attempting to load pane %@", className);
+
 	Class class = NSClassFromString(className);
 	if (class)
 	{

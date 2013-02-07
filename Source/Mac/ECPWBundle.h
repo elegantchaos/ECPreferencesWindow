@@ -29,12 +29,20 @@
 @interface ECPWBundle : NSObject
 
 /**
- Called when a preferences bundle is loaded.
+ Make a new bundle object.
  @param controller The controller doing the loading.
- @param bundle The bundle that the bundle was loaded from.
+ @param bundle The NSBundle that this object was loaded from.
+ @return The new object.
+ */
+
+- (id)initWithController:(ECPWController*)controller bundle:(NSBundle*)bundle;
+
+
+/**
+ Called when a preferences bundle is loaded.
  @return A list of dictionaries containing descriptions of panes to load. See ECPWController for the format of these dictionaries.
  */
 
-+ (NSArray*)preferencesController:(ECPWController*)controller loadedBundle:(NSBundle*)bundle;
+- (NSArray*)panesToLoad;
 
 @end

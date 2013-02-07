@@ -36,7 +36,7 @@
  - UsesTexturedWindow: should the preferences window be textured? Defaults to NO.
  - AlwaysShowsToolbar: should the toolbar be visible even if there is just one pane? Defaults to NO.
  - CentreFirstTimeOnly: should the window only be centered when it's created (YES), or every time it is shown (NO). Defaults to NO.
- - BundleDirectory: the name of the directory to look for preference bundles in. Defaults to "Preferences".
+ - BundleDirectory: the name of the directory to look for preference bundles in. Defaults to "PlugIns".
  - BundleExtension: the extension to look for in the bundle directory. Defaults to "preferences".
  - ToolbarDisplayMode: the display mode to use for the toolbar. Defaults to NSToolbarDisplayModeDefault.
  - ToolbarSizeMode: the display size mode to use for the toolbar. Defaults to NSToolbarSizeModeDefault.

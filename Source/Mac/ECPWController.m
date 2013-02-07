@@ -80,7 +80,7 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)loadPreferencesBundlesInBundle:(NSBundle*)bundle
 {
 	NSString* extension = self.options[@"BundleExtension"] ?: @"preferences";
-	NSString* directory = self.options[@"BundleDirectory"] ?: @"Preferences";
+	NSString* directory = self.options[@"BundleDirectory"] ?: @"PlugIns";
 
 	ECDebug(ECPreferencesChannel, @"Loading preferences bundles *.%@ in %@ of %@", extension, directory, bundle);
 

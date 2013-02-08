@@ -351,10 +351,6 @@
 			baseConfigurationReference = 2260A31015DFD96D0057C9DA /* MacDebug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/neu-ebxgnzguajhzbogvysnvpybbekqu/Build/Products/Debug\"",
-				);
 				GCC_PREFIX_HEADER = "Source/Prefix/$(PRODUCT_NAME)$(CONFIGURATION).pch";
 			};
 			name = Debug;
@@ -364,10 +360,6 @@
 			baseConfigurationReference = 2260A31115DFD96D0057C9DA /* MacRelease.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/neu-ebxgnzguajhzbogvysnvpybbekqu/Build/Products/Debug\"",
-				);
 				GCC_PREFIX_HEADER = "Source/Prefix/$(PRODUCT_NAME)$(CONFIGURATION).pch";
 			};
 			name = Release;

@@ -12,15 +12,15 @@
 		2204C82715E282BB00F71E15 /* ECPWController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2204C7EB15E282BB00F71E15 /* ECPWController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2204C82815E282BB00F71E15 /* ECPWController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204C7EC15E282BB00F71E15 /* ECPWController.m */; };
 		2260A3A015DFE6860057C9DA /* ECPreferencesWindow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2260A2E915DFD7290057C9DA /* ECPreferencesWindow.framework */; };
-		22C2DB5E14FB9ADC005D2E89 /* Test.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22C2DB5D14FB9ADC005D2E89 /* Test.bundle */; };
-		22D45A5C16C15C9B00BA9A9B /* ECConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5916C15C9B00BA9A9B /* ECConfig.framework */; };
-		22D45A5D16C15C9B00BA9A9B /* ECCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5A16C15C9B00BA9A9B /* ECCore.framework */; };
 		22D45A5E16C15C9B00BA9A9B /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */; };
 		22D45A6016C15CBE00BA9A9B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5F16C15CBE00BA9A9B /* Cocoa.framework */; };
 		22E60DB616C0063800C988C9 /* ECPreferencesWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E60DB516C0063800C988C9 /* ECPreferencesWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22E60DF616C1243300C988C9 /* ECPWBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E60DCB16C01C5E00C988C9 /* ECPWBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22E60E0716C12F0500C988C9 /* ECPWBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E60E0616C12F0500C988C9 /* ECPWBundle.m */; };
 		22E60E0916C143B600C988C9 /* ECPWBundle.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 22E60E0816C143B600C988C9 /* ECPWBundle.xcconfig */; };
+		22ECE86C16DC008F00F9C782 /* Test.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22ECE86B16DC008F00F9C782 /* Test.bundle */; };
+		22ECE87616DC09E300F9C782 /* ECPreferencesWindowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22ECE87516DC09E300F9C782 /* ECPreferencesWindowTests.m */; };
+		22ECE87716DC0A1A00F9C782 /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +38,6 @@
 		2204C7E915E282BB00F71E15 /* ECPWPane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWPane.m; sourceTree = "<group>"; };
 		2204C7EB15E282BB00F71E15 /* ECPWController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPWController.h; sourceTree = "<group>"; };
 		2204C7EC15E282BB00F71E15 /* ECPWController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWController.m; sourceTree = "<group>"; };
-		221662E914FB9315009B975D /* ECCoreTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ECCoreTests.plist; path = Resources/Tests/ECCoreTests.plist; sourceTree = SOURCE_ROOT; };
 		2260A2E915DFD7290057C9DA /* ECPreferencesWindow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ECPreferencesWindow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2260A31015DFD96D0057C9DA /* MacDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacDebug.xcconfig; sourceTree = "<group>"; };
 		2260A31115DFD96D0057C9DA /* MacRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacRelease.xcconfig; sourceTree = "<group>"; };
@@ -51,8 +50,6 @@
 		22728A68124A240500A9881F /* ECPreferencesWindowShared.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindowShared.pch; sourceTree = "<group>"; };
 		2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECPreferencesWindowTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22C2DB5D14FB9ADC005D2E89 /* Test.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Test.bundle; path = ../ECUnitTests/Resources/Test.bundle; sourceTree = SOURCE_ROOT; };
-		22D45A5916C15C9B00BA9A9B /* ECConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		22D45A5A16C15C9B00BA9A9B /* ECCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECLogging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D45A5F16C15CBE00BA9A9B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		22E60DB516C0063800C988C9 /* ECPreferencesWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindow.h; sourceTree = "<group>"; };
@@ -60,6 +57,9 @@
 		22E60DCB16C01C5E00C988C9 /* ECPWBundle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ECPWBundle.h; sourceTree = "<group>"; };
 		22E60E0616C12F0500C988C9 /* ECPWBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWBundle.m; sourceTree = "<group>"; };
 		22E60E0816C143B600C988C9 /* ECPWBundle.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ECPWBundle.xcconfig; sourceTree = "<group>"; };
+		22ECE86B16DC008F00F9C782 /* Test.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Test.bundle; path = ../../ECLogging/Resources/Test.bundle; sourceTree = "<group>"; };
+		22ECE87116DC09BE00F9C782 /* ECPreferencesWindowTests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ECPreferencesWindowTests.plist; sourceTree = "<group>"; };
+		22ECE87516DC09E300F9C782 /* ECPreferencesWindowTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPreferencesWindowTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +68,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				22D45A6016C15CBE00BA9A9B /* Cocoa.framework in Frameworks */,
-				22D45A5C16C15C9B00BA9A9B /* ECConfig.framework in Frameworks */,
-				22D45A5D16C15C9B00BA9A9B /* ECCore.framework in Frameworks */,
 				22D45A5E16C15C9B00BA9A9B /* ECLogging.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22ECE87716DC0A1A00F9C782 /* ECLogging.framework in Frameworks */,
 				2260A3A015DFE6860057C9DA /* ECPreferencesWindow.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +98,7 @@
 			children = (
 				22E60DC516C00DFB00C988C9 /* README.md */,
 				2260A30B15DFD8FB0057C9DA /* Source */,
+				22ECE87016DC094500F9C782 /* Tests */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -111,8 +111,6 @@
 			isa = PBXGroup;
 			children = (
 				22D45A5F16C15CBE00BA9A9B /* Cocoa.framework */,
-				22D45A5916C15C9B00BA9A9B /* ECConfig.framework */,
-				22D45A5A16C15C9B00BA9A9B /* ECCore.framework */,
 				22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */,
 			);
 			name = Frameworks;
@@ -143,7 +141,6 @@
 		223CBAFB1205C7680008A641 /* tests */ = {
 			isa = PBXGroup;
 			children = (
-				221662E914FB9315009B975D /* ECCoreTests.plist */,
 				22C2DB5D14FB9ADC005D2E89 /* Test.bundle */,
 			);
 			name = tests;
@@ -153,6 +150,7 @@
 		2260A30B15DFD8FB0057C9DA /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				22ECE87416DC09E300F9C782 /* Tests */,
 				2210B5D41152E630006C6CCA /* Configuration */,
 				22CA557F13DA09FF007E89E2 /* Mac */,
 				22728A64124A240500A9881F /* Prefix */,
@@ -182,6 +180,24 @@
 				22E60E0616C12F0500C988C9 /* ECPWBundle.m */,
 			);
 			path = Mac;
+			sourceTree = "<group>";
+		};
+		22ECE87016DC094500F9C782 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				22ECE87116DC09BE00F9C782 /* ECPreferencesWindowTests.plist */,
+				22ECE86B16DC008F00F9C782 /* Test.bundle */,
+			);
+			name = Tests;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		22ECE87416DC09E300F9C782 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				22ECE87516DC09E300F9C782 /* ECPreferencesWindowTests.m */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,7 +299,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22C2DB5E14FB9ADC005D2E89 /* Test.bundle in Resources */,
+				22ECE86C16DC008F00F9C782 /* Test.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22ECE87616DC09E300F9C782 /* ECPreferencesWindowTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

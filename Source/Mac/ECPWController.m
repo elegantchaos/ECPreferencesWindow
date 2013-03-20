@@ -234,7 +234,6 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 - (void)showPaneWithIdentifier:(NSString*)name display:(BOOL)display
 {
 	ECPWPane* pane = [self paneWithIdentifier:name];
-	BOOL result;
     if (pane)
 	{
 		[self showPane:pane display:display];

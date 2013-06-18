@@ -11,6 +11,7 @@
 		2204C82515E282BB00F71E15 /* ECPWPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204C7E915E282BB00F71E15 /* ECPWPane.m */; };
 		2204C82715E282BB00F71E15 /* ECPWController.h in Headers */ = {isa = PBXBuildFile; fileRef = 2204C7EB15E282BB00F71E15 /* ECPWController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2204C82815E282BB00F71E15 /* ECPWController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2204C7EC15E282BB00F71E15 /* ECPWController.m */; };
+		220A160C17710C9D00173510 /* ECUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220A160B17710C9D00173510 /* ECUnitTests.framework */; };
 		2260A3A015DFE6860057C9DA /* ECPreferencesWindow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2260A2E915DFD7290057C9DA /* ECPreferencesWindow.framework */; };
 		22D45A5E16C15C9B00BA9A9B /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */; };
 		22D45A6016C15CBE00BA9A9B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D45A5F16C15CBE00BA9A9B /* Cocoa.framework */; };
@@ -37,6 +38,7 @@
 		2204C7E915E282BB00F71E15 /* ECPWPane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWPane.m; sourceTree = "<group>"; };
 		2204C7EB15E282BB00F71E15 /* ECPWController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPWController.h; sourceTree = "<group>"; };
 		2204C7EC15E282BB00F71E15 /* ECPWController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECPWController.m; sourceTree = "<group>"; };
+		220A160B17710C9D00173510 /* ECUnitTests.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECUnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2260A2E915DFD7290057C9DA /* ECPreferencesWindow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ECPreferencesWindow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2260A31015DFD96D0057C9DA /* MacDebug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacDebug.xcconfig; sourceTree = "<group>"; };
 		2260A31115DFD96D0057C9DA /* MacRelease.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MacRelease.xcconfig; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				220A160C17710C9D00173510 /* ECUnitTests.framework in Frameworks */,
 				22ECE87716DC0A1A00F9C782 /* ECLogging.framework in Frameworks */,
 				2260A3A015DFE6860057C9DA /* ECPreferencesWindow.framework in Frameworks */,
 			);
@@ -109,6 +112,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				220A160B17710C9D00173510 /* ECUnitTests.framework */,
 				22D45A5F16C15CBE00BA9A9B /* Cocoa.framework */,
 				22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */,
 			);

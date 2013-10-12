@@ -27,14 +27,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_info release];
-	[_toolbarItem release];
-
-	[super dealloc];
-}
-
 - (NSView*)view
 {
     BOOL loaded = YES;
@@ -93,7 +85,7 @@
 	if (!result)
 	{
 		NSURL* url = [[NSBundle bundleForClass:[self class]] URLForImageResource:name];
-		result = [[[NSImage alloc] initByReferencingURL:url] autorelease];
+		result = [[NSImage alloc] initByReferencingURL:url];
 	}
 
     return result;
@@ -117,7 +109,6 @@
 		[item setToolTip:self.toolTip];
 		[item setImage:self.icon];
 		self.toolbarItem = item;
-		[item release];
 	}
 
 	return _toolbarItem;

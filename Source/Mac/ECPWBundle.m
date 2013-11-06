@@ -28,13 +28,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_bundle release];
-
-	[super dealloc];
-}
-
 - (NSArray*)panesToLoad
 {
 	NSDictionary* info = self.bundle.infoDictionary[@"ECPreferencesWindow"];

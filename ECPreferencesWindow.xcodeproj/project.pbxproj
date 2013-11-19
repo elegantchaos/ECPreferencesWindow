@@ -49,7 +49,7 @@
 		22728A66124A240500A9881F /* ECPreferencesWindowDebug.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindowDebug.pch; sourceTree = "<group>"; };
 		22728A67124A240500A9881F /* ECPreferencesWindowRelease.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindowRelease.pch; sourceTree = "<group>"; };
 		22728A68124A240500A9881F /* ECPreferencesWindowShared.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECPreferencesWindowShared.pch; sourceTree = "<group>"; };
-		2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECPreferencesWindowTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECPreferencesWindowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22C2DB5D14FB9ADC005D2E89 /* Test.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Test.bundle; path = ../ECUnitTests/Resources/Test.bundle; sourceTree = SOURCE_ROOT; };
 		22D45A5B16C15C9B00BA9A9B /* ECLogging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECLogging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D45A5F16C15CBE00BA9A9B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -89,7 +89,7 @@
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.octest */,
+				2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.xctest */,
 				2260A2E915DFD7290057C9DA /* ECPreferencesWindow.framework */,
 			);
 			name = Products;
@@ -254,7 +254,7 @@
 			);
 			name = ECPreferencesWindowTests;
 			productName = libECCoreMacTests;
-			productReference = 2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.octest */;
+			productReference = 2283A3F514F52EC0009142F7 /* ECPreferencesWindowTests.xctest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */

@@ -437,10 +437,10 @@ NSString *const SelectedPaneKey = @"SelectedPane";
 
 		NSString* appName = [[NSApplication sharedApplication] applicationName];
 		NSRunAlertPanel(@"Preferences",
-										[NSString stringWithFormat:@"Preferences are not available for %@.", appName],
+										@"Preferences are not available for %@.",
 										@"OK",
 										nil,
-										nil);
+										nil, appName);
 	}
 }
 
